@@ -16,7 +16,10 @@
   },
   "keywords": [
     "vue3",
-    "codemirror"
+    "codemirror",
+    "markdown",
+    "markdown preview",
+    "markdownIt"
   ],
   "author": "wenxue.cwx",
   "license": "MIT",
