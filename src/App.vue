@@ -1,43 +1,25 @@
 <template>
-  <div class="page">
-    <markdown-editor />
+  <div class="codemirror-demo">
+    <MarkdownEditor />
   </div>
 </template>
-
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
-import MarkdownEditor from '@/components/MarkdownEditor.vue'
+
+import MarkdownEditor from './components/editor/markdown.vue'
 
 export default defineComponent({
-  name: 'App',
   components: {
     MarkdownEditor
   },
   setup () {
-    return {
-    }
-  }
+    
+  },
 })
 </script>
-
 <style lang="scss">
-html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-html {
-  font-size: 14px;
-}
-
-#app {
-  // font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  width: 100%;
-  height: 100%;
-  position: relative;
+.codemirror-demo {
+  border: 1px #dddddd solid;
+  height: 600px;
 }
 </style>

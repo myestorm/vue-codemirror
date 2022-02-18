@@ -1,43 +1,30 @@
 {
   "name": "vue-codemirror",
+  "private": true,
   "version": "1.0.0",
-  "description": "codemirror vue组件",
-  "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview",
-    "lint": "eslint --ext .js,vue .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/myestorm/vue-codemirror.git"
-  },
-  "keywords": [
-    "vue3",
-    "codemirror",
-    "markdown",
-    "markdown preview",
-    "markdownIt"
-  ],
-  "author": "wenxue.cwx",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/myestorm/vue-codemirror/issues"
-  },
-  "homepage": "https://github.com/myestorm/vue-codemirror#readme",
   "dependencies": {
-    "codemirror": "^5.61.0",
-    "markdown-it": "^12.0.6",
-    "vue": "^3.0.11"
+    "@codemirror/basic-setup": "^0.19.1",
+    "@codemirror/lang-css": "^0.19.3",
+    "@codemirror/lang-html": "^0.19.4",
+    "@codemirror/lang-javascript": "^0.19.7",
+    "@codemirror/lang-json": "^0.19.2",
+    "@codemirror/lang-markdown": "^0.19.6",
+    "prettier": "^2.5.1",
+    "uuid": "^8.3.2",
+    "vue": "^3.2.25"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.2.1",
-    "@vue/compiler-sfc": "^3.0.5",
-    "eslint": "^7.24.0",
-    "eslint-plugin-vue": "^7.9.0",
-    "sass": "^1.32.8",
-    "vite": "^2.1.5"
+    "@types/prettier": "^2.4.4",
+    "@types/uuid": "^8.3.4",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "sass": "^1.49.8",
+    "typescript": "^4.5.4",
+    "vite": "^2.8.0",
+    "vue-tsc": "^0.29.8"
   }
 }
