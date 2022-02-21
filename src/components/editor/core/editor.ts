@@ -4,8 +4,9 @@ import { EditorState, Extension, Compartment } from '@codemirror/state'
 
 import prettier from 'prettier/standalone'
 
-import { Dark } from './theme/dark'
-import { Light } from './theme/light'
+import { Dark } from '../theme/dark'
+import { Light } from '../theme/light'
+import extensions, { EditorConfigType } from '../extensions/index'
 
 class BaseEditor {
   box!: Element
@@ -25,6 +26,41 @@ class BaseEditor {
   }
 
   prettier = prettier
+
+  constructor (options?: EditorConfigType) {
+    const defaultOptions: EditorConfigType = {
+      lineWrapping: true,
+      lineNumbers: true,
+      allowMultipleSelections: true,
+      theme: 'light'
+    }
+    const opts = Object.assign({}, defaultOptions, options)
+    this.extensions = extensions(opts)
+
+    // 默认白天黑夜模式
+    if (opts.theme === 'dark') {
+      this.extensions.push(this.theme.of(this.themeDark))
+    } else {
+      this.extensions.push(this.theme.of(this.themeLight))
+    }
+
+    // 事件
+    const updateListener = EditorView.updateListener.of((update) => {
+      const value = update.state.doc.toString()
+      if (update.docChanged) {
+        this.events.change(update, value)
+      }
+      if (update.selectionSet) { // 选区变化
+        this.selectionSet(update)
+      }
+  
+      if (update.focusChanged) { // 焦点变化
+        this.focusChanged(update, value)
+      }
+    })
+
+    this.extensions.push(updateListener)
+  }
   
   $$ (exp: string): Element | null {
     return document.querySelector(exp)

@@ -6,7 +6,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import MarkdownEditor from './components/editor/markdown.vue'
+import MarkdownEditor from './components/editor/markdown/index.vue'
 
 export default defineComponent({
   components: {
