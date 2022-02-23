@@ -1,6 +1,14 @@
 import { Line } from '@codemirror/text'
-import { EditorView, ViewUpdate } from '@codemirror/view'
-import { EditorState, Extension, Compartment } from '@codemirror/state'
+import { EditorView, ViewUpdate, KeyBinding } from '@codemirror/view'
+import { EditorState, Extension, Compartment, EditorSelection, Transaction } from '@codemirror/state'
+import { historyKeymap } from '@codemirror/history'
+import { foldKeymap } from '@codemirror/fold'
+import { defaultKeymap, indentWithTab } from '@codemirror/commands'
+import { closeBracketsKeymap } from '@codemirror/closebrackets'
+import { completionKeymap } from '@codemirror/autocomplete'
+import { searchKeymap } from '@codemirror/search'
+import { commentKeymap } from '@codemirror/comment'
+import { lintKeymap } from '@codemirror/lint'
 
 import prettier from 'prettier/standalone'
 
@@ -13,6 +21,7 @@ class BaseEditor {
   state!: EditorState
   view!: EditorView
   theme = new Compartment()
+  isDark = true
   themeDark = Dark
   themeLight = Light
   extensions: Extension[] = []
@@ -20,10 +29,9 @@ class BaseEditor {
     focus: (update: ViewUpdate, value: string) :void => {},
     blur: (update: ViewUpdate, value: string) :void => {},
     change: (update: ViewUpdate, value: string) :void => {},
-    save: (update: EditorView, value: string) :void => {},
-    beautify: (update: EditorView) :void => {},
-    selectionChange: (update: ViewUpdate, line: Line) :void => {},
+    selectionChange: (update: ViewUpdate, line: Line) :void => {}
   }
+  hotKeyMaps: KeyBinding[] = []
 
   prettier = prettier
 
@@ -40,9 +48,24 @@ class BaseEditor {
     // 默认白天黑夜模式
     if (opts.theme === 'dark') {
       this.extensions.push(this.theme.of(this.themeDark))
+      this.isDark = true
     } else {
       this.extensions.push(this.theme.of(this.themeLight))
+      this.isDark = false
     }
+
+    // 快捷键
+    this.hotKeyMaps = [
+      indentWithTab,
+      ...closeBracketsKeymap,
+      ...defaultKeymap,
+      ...searchKeymap,
+      ...historyKeymap,
+      ...foldKeymap,
+      ...commentKeymap,
+      ...completionKeymap,
+      ...lintKeymap,
+    ]
 
     // 事件
     const updateListener = EditorView.updateListener.of((update) => {
@@ -82,16 +105,41 @@ class BaseEditor {
 
   getValue (): string {
     const value = this.view.state.doc.toString()
-    return value
+    return value || ''
   }
 
   setValue (val: string = '') {
-    const state = EditorState.create({
-      doc: val,
-      extensions: this.extensions
+    const { view } = this
+    const state = view.state
+    const transaction = state.update({
+      changes: {
+        from: 0,
+        to: state.doc.length,
+        insert: val
+      }
     })
-    this.view.setState(state)
-    this.state = state
+    view.dispatch(transaction)
+  }
+
+  /**
+   * 设置光标位置，以当前光标为基准，设置便宜量
+   * @param offsetFrom number 开始点偏移量
+   * @param offsetTo number 结束点偏移量
+   */
+   setCursor (offsetFrom: number, offsetTo: number) {
+    const { view } = this
+    if (view) {
+      const state = view.state
+      const tr: Transaction = state.update(
+        state.changeByRange(range => {
+          return {
+            range: EditorSelection.range(range.from + offsetFrom, range.to + offsetTo)
+          }
+        })
+      )
+      view.dispatch(tr)
+      view.focus()
+    }
   }
 
   regExpcharacterEscape (str: string) {

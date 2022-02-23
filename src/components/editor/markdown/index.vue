@@ -1,71 +1,223 @@
 <template>
-  <div :id="id" class="content"></div>
-  <button @click="light">白天模式</button>
-  <button @click="dark">黑夜模式</button>
+  <div class="totonoo-markdown-editor" :class="[isFullscreen ? 'editor-fullscreen' : '']" ref="rootBox">
+    <div :id="id" class="content"></div>
+    <editor-dialog v-model="uploadVisible" title="媒体资源">
+      <editor-upload @done="uploadDone"></editor-upload>
+    </editor-dialog>
+    <editor-dialog v-model="tableVisible" title="插入表格">
+      <editor-table @done="tableDone"></editor-table>
+    </editor-dialog>
+    <editor-dialog v-model="previewVisible" title="预览" width="760px">
+      <editor-preview :root="rootBox" v-model="modelValue"></editor-preview>
+    </editor-dialog>
+    <editor-helper v-model="theme" :helper="helper" @themeChange="themeChange"></editor-helper>
+  </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, nextTick } from 'vue'
+import { defineComponent, onMounted, nextTick, ref, watch } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
+import { EditorView } from '@codemirror/view'
 
-import MarkdownEditor from './index'
+import EditorDialog from '../core/dialog.vue'
+import EditorUpload from '../core/upload.vue'
+import EditorTable from '../core/table.vue'
+import EditorPreview from '../core/preview.vue'
+import EditorHelper from '../core/helper.vue'
+
+import MarkdownEditor, { HotKeyTypes } from './index'
 
 export default defineComponent({
   name: 'MarkdownEditor',
-  emits: ['ready', 'update:value', 'change', 'focus', 'blur', 'editorSave', 'format', 'infoClick'],
+  props: {
+    modelValue: {
+      type: String,
+      default: ''
+    },
+    config: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    helper: {
+      type: Object,
+      default: () => {
+        return {
+          theme: true
+        }
+      }
+    }
+  },
+  components: {
+    EditorDialog,
+    EditorUpload,
+    EditorTable,
+    EditorPreview,
+    EditorHelper
+  },
+  emits: ['ready', 'update:modelValue', 'change', 'focus', 'blur', 'selectionChange', 'hotKey'],
   setup (props, ctx) {
     const prefix = 'totonoo-markdown-editor-'
     const id = uuidv4()
+    const rootBox = ref(null)
     
     let editor: MarkdownEditor
 
+    // 上传
+    const uploadVisible = ref(false)
+    const uploadDone = (url: string, desc: string) => {
+      uploadVisible.value = false
+      editor.insertMedia(url, desc)
+    }
+
+    // 表格
+    const tableVisible = ref(false)
+    const tableDone = (cols: number, rows: number) => {
+      tableVisible.value = false
+      editor.insertTable(cols, rows)
+    }
+
+    // 预览
+    const previewVisible = ref(false)
+    const previewDone = (cols: number, rows: number) => {
+      previewVisible.value = false
+      editor.insertTable(cols, rows)
+    }
+
+    // 全屏
+    const isFullscreen = ref(false)
+
+    // 皮肤
+    const theme = ref(props.config?.theme || 'light')
+
+    // 监听value变化，同步编辑器
+    watch(() => props.modelValue, (val) => {
+      if (editor && editor.getValue() !== val) {
+        editor.setValue(val)
+      }
+    })
+
     onMounted(() => {
       nextTick(() => {
+        // 初始化
         editor = new MarkdownEditor(`#${prefix + id}`, {
-          initValue: `
-## 自定义主题
-
-Element 默认提供一套主题，CSS 命名采用 BEM 的风格，方便使用者覆盖样式。我们提供了四种方法，可以进行不同程度的样式自定义。
-
-## 主题编辑器
-
-使用在线主题编辑器，可以修改定制 Element 所有全局和组件的 Design Tokens，并可
-以方便地实时预览样式改变后的视觉。同时它还可以基于新的定制样式生成完整的样式文件包，供
-直接下载使用（关于如何使用下载的主题包，请参考本节「引入自定义主题」部分）。
-
-也可以使用主题编辑器 Chrome 插件，在任何使用 Element 开发的网站上配置并实时预览主题。
-`
+          initValue: props.modelValue
         })
-        editor.events.focus = (update) => {
-          console.log(update)
+
+        // 事件
+        editor.events.change = (update, value) => {
+          ctx.emit('update:modelValue', value)
+          ctx.emit('change', value, update)
         }
-        editor.events.save = (update, value) => {
-          console.log(value)
+        editor.events.blur = (update, value) => {
+          ctx.emit('blur', value, update)
+        }
+        editor.events.focus = (update, value) => {
+          ctx.emit('focus', value, update)
+        }
+        editor.events.selectionChange = (update, line) => {
+          ctx.emit('selectionChange', line, update)
+        }
+
+        // 快捷键
+        editor.hotKey = <T>(type: HotKeyTypes, value: T, view: EditorView): void => {
+          switch (type) {
+            case 'Ctrl-Alt-m': { // 插入媒体
+              uploadVisible.value = true
+              break
+            }
+            case 'Ctrl-Alt-t': { // 插入表格
+              tableVisible.value = true
+              break
+            }
+            case 'Ctrl-Alt-p': { // 预览
+              previewVisible.value = true
+              break
+            }
+            case 'F11': { // 全屏
+              isFullscreen.value = !isFullscreen.value
+              break
+            }
+            default: {
+              break
+            }
+          }
+          ctx.emit('hotKey', {
+            type,
+            value,
+            view
+          })
         }
       })
     })
-
     return {
       id: prefix + id,
-      dark () {
+      rootBox,
+      uploadVisible,
+      uploadDone,
+      tableVisible,
+      tableDone,
+      previewVisible,
+      previewDone,
+      isFullscreen,
+      theme,
+      themeChange (theme: string) {
+        const _theme = theme === 'dark' ? editor.themeDark : editor.themeLight
+        const _parent = editor.box.parentElement
         editor.view.dispatch({
-          effects: editor.theme.reconfigure(editor.themeDark)
+          effects: editor.theme.reconfigure(_theme)
         })
-      },
-      light () {
-        editor.view.dispatch({
-          effects: editor.theme.reconfigure(editor.themeLight)
-        })
+        if (_parent) {
+          if (theme === 'dark') {
+            _parent.classList.add('dark')
+          } else {
+            _parent.classList.remove('dark')
+          }
+        }
       }
     }
   },
 })
 </script>
 <style lang="scss" scoped>
-.content {
+.totonoo-markdown-editor {
+  --color-bg: #ffffff;
+  --color-text: #666666;
+  --color-text-1: #999999;
+  --color-border: #eee;
+  --color-dialog-bg: rgba(255, 255, 255, 0.6);
+  --border-radius: 2px;
+
+  --input-text-color: rgba(0, 0, 0, 0.9);
+  --input-text-bg: rgba(0, 0, 0, 0.06);
+  --input-text-hover-bg: rgba(0,0,0, 0.1);
+  &.dark {
+    --color-bg: #2a2a2b;
+    --color-text: #d4d4d4;
+    --color-text-1: #999999;
+    --color-border: rgb(19, 19, 19);
+    --color-dialog-bg: rgba(0, 0, 0, 0.6);
+
+    --input-text-color: rgba(255, 255, 255, 0.9);
+    --input-text-bg: rgba(255, 255, 255, 0.08);
+    --input-text-hover-bg: rgba(255, 255, 255, 0.16);
+  }
+
+  width: 100%;
   height: 100%;
-  overflow: auto;
-  > .cm-editor {
+  position: relative;
+
+  &.editor-fullscreen {
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+  .content {
     height: 100%;
+    overflow: auto;
+    > .cm-editor {
+      height: 100%;
+    }
   }
 }
 </style>
