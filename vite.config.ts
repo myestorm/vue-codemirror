@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [vue(), svgLoader()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/vue-codemirror.ts'),
+      entry: resolve(__dirname, 'src/main.ts'),
       name: 'vue-codemirror'
     },
     rollupOptions: {

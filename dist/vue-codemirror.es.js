@@ -21,7 +21,7 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import { openBlock, createElementBlock, createElementVNode, defineComponent, computed, onMounted, resolveComponent, normalizeStyle, toDisplayString, createVNode, renderSlot, createCommentVNode, ref, withDirectives, vModelText, createTextVNode, nextTick, Fragment, renderList, pushScopeId, popScopeId, watch, normalizeClass, withCtx } from "vue";
+import { openBlock, createElementBlock, createElementVNode, defineComponent, computed, onMounted, resolveComponent, normalizeStyle, toDisplayString, createVNode, renderSlot, createCommentVNode, ref, withDirectives, vModelText, createTextVNode, nextTick, Fragment, renderList, pushScopeId, popScopeId, watch, normalizeClass, withCtx, createApp } from "vue";
 var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
@@ -63,7 +63,7 @@ function v4(options, buf, offset) {
   }
   return stringify(rnds);
 }
-const _hoisted_1$a = {
+const _hoisted_1$b = {
   viewBox: "0 0 1024 1024",
   xmlns: "http://www.w3.org/2000/svg"
 };
@@ -75,7 +75,7 @@ const _hoisted_3$7 = [
   _hoisted_2$8
 ];
 function render$4(_ctx, _cache) {
-  return openBlock(), createElementBlock("svg", _hoisted_1$a, _hoisted_3$7);
+  return openBlock(), createElementBlock("svg", _hoisted_1$b, _hoisted_3$7);
 }
 var IconRemove = { render: render$4 };
 var dialog_vue_vue_type_style_index_0_scoped_true_lang = "";
@@ -87,7 +87,7 @@ var _export_sfc = (sfc, props) => {
   }
   return target2;
 };
-const _sfc_main$5 = defineComponent({
+const _sfc_main$6 = defineComponent({
   components: {
     IconRemove
   },
@@ -128,14 +128,14 @@ const _sfc_main$5 = defineComponent({
     };
   }
 });
-const _hoisted_1$9 = {
+const _hoisted_1$a = {
   key: 0,
   class: "editor-dialog"
 };
 const _hoisted_2$7 = { class: "title" };
-function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_IconRemove = resolveComponent("IconRemove");
-  return _ctx.modelValue ? (openBlock(), createElementBlock("div", _hoisted_1$9, [
+  return _ctx.modelValue ? (openBlock(), createElementBlock("div", _hoisted_1$a, [
     createElementVNode("div", {
       class: "content",
       style: normalizeStyle(_ctx.style)
@@ -153,8 +153,8 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
     ], 4)
   ])) : createCommentVNode("", true);
 }
-var EditorDialog = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5], ["__scopeId", "data-v-5a443ff8"]]);
-const _hoisted_1$8 = {
+var EditorDialog = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6], ["__scopeId", "data-v-5a443ff8"]]);
+const _hoisted_1$9 = {
   viewBox: "0 0 48 48",
   width: "16",
   height: "16",
@@ -168,10 +168,10 @@ const _hoisted_3$6 = [
   _hoisted_2$6
 ];
 function render$3(_ctx, _cache) {
-  return openBlock(), createElementBlock("svg", _hoisted_1$8, _hoisted_3$6);
+  return openBlock(), createElementBlock("svg", _hoisted_1$9, _hoisted_3$6);
 }
 var IconUpload = { render: render$3 };
-const _sfc_main$4 = defineComponent({
+const _sfc_main$5 = defineComponent({
   components: {
     IconUpload
   },
@@ -233,7 +233,7 @@ const _sfc_main$4 = defineComponent({
     };
   }
 });
-const _hoisted_1$7 = { class: "editor-dialog-form" };
+const _hoisted_1$8 = { class: "editor-dialog-form" };
 const _hoisted_2$5 = { class: "form-item" };
 const _hoisted_3$5 = /* @__PURE__ */ createElementVNode("label", { for: "toolbar-media-url" }, "\u5730\u5740", -1);
 const _hoisted_4$3 = { class: "upload-btn" };
@@ -241,9 +241,9 @@ const _hoisted_5$2 = /* @__PURE__ */ createTextVNode(" \u672C\u5730\u4E0A\u4F20 
 const _hoisted_6$1 = { class: "form-item" };
 const _hoisted_7 = /* @__PURE__ */ createElementVNode("label", { for: "toolbar-media-desc" }, "\u63CF\u8FF0", -1);
 const _hoisted_8 = { class: "form-item form-item-submit" };
-function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_IconUpload = resolveComponent("IconUpload");
-  return openBlock(), createElementBlock("div", _hoisted_1$7, [
+  return openBlock(), createElementBlock("div", _hoisted_1$8, [
     createElementVNode("div", _hoisted_2$5, [
       _hoisted_3$5,
       withDirectives(createElementVNode("input", {
@@ -290,8 +290,8 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     ])
   ]);
 }
-var EditorUpload = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
-const _sfc_main$3 = defineComponent({
+var EditorUpload = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
+const _sfc_main$4 = defineComponent({
   setup(props, ctx) {
     const cols = ref(1);
     const rows = ref(1);
@@ -304,14 +304,14 @@ const _sfc_main$3 = defineComponent({
     };
   }
 });
-const _hoisted_1$6 = { class: "editor-dialog-form" };
+const _hoisted_1$7 = { class: "editor-dialog-form" };
 const _hoisted_2$4 = { class: "form-item" };
 const _hoisted_3$4 = /* @__PURE__ */ createElementVNode("label", { for: "toolbar-col" }, "\u5217\u6570", -1);
 const _hoisted_4$2 = { class: "form-item" };
 const _hoisted_5$1 = /* @__PURE__ */ createElementVNode("label", { for: "toolbar-row" }, "\u884C\u6570", -1);
 const _hoisted_6 = { class: "form-item form-item-submit" };
-function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("div", _hoisted_1$6, [
+function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("div", _hoisted_1$7, [
     createElementVNode("div", _hoisted_2$4, [
       _hoisted_3$4,
       withDirectives(createElementVNode("input", {
@@ -341,7 +341,7 @@ function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     ])
   ]);
 }
-var EditorTable = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+var EditorTable = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 function getDefaultExportFromCjs(x) {
   return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
@@ -5510,22 +5510,22 @@ Ruler$3.prototype.__compile__ = function() {
   });
 };
 Ruler$3.prototype.at = function(name2, fn, options) {
-  var index2 = this.__find__(name2);
+  var index = this.__find__(name2);
   var opt = options || {};
-  if (index2 === -1) {
+  if (index === -1) {
     throw new Error("Parser rule not found: " + name2);
   }
-  this.__rules__[index2].fn = fn;
-  this.__rules__[index2].alt = opt.alt || [];
+  this.__rules__[index].fn = fn;
+  this.__rules__[index].alt = opt.alt || [];
   this.__cache__ = null;
 };
 Ruler$3.prototype.before = function(beforeName, ruleName, fn, options) {
-  var index2 = this.__find__(beforeName);
+  var index = this.__find__(beforeName);
   var opt = options || {};
-  if (index2 === -1) {
+  if (index === -1) {
     throw new Error("Parser rule not found: " + beforeName);
   }
-  this.__rules__.splice(index2, 0, {
+  this.__rules__.splice(index, 0, {
     name: ruleName,
     enabled: true,
     fn,
@@ -5534,12 +5534,12 @@ Ruler$3.prototype.before = function(beforeName, ruleName, fn, options) {
   this.__cache__ = null;
 };
 Ruler$3.prototype.after = function(afterName, ruleName, fn, options) {
-  var index2 = this.__find__(afterName);
+  var index = this.__find__(afterName);
   var opt = options || {};
-  if (index2 === -1) {
+  if (index === -1) {
     throw new Error("Parser rule not found: " + afterName);
   }
-  this.__rules__.splice(index2 + 1, 0, {
+  this.__rules__.splice(index + 1, 0, {
     name: ruleName,
     enabled: true,
     fn,
@@ -5800,8 +5800,8 @@ var isMdAsciiPunct$1 = utils$1.isMdAsciiPunct;
 var QUOTE_TEST_RE = /['"]/;
 var QUOTE_RE = /['"]/g;
 var APOSTROPHE = "\u2019";
-function replaceAt(str, index2, ch) {
-  return str.substr(0, index2) + ch + str.substr(index2 + 1);
+function replaceAt(str, index, ch) {
+  return str.substr(0, index) + ch + str.substr(index + 1);
 }
 function process_inlines(tokens, state) {
   var i, token2, text3, t2, pos, max, thisLevel, item, lastChar, nextChar2, isLastPunctChar, isNextPunctChar, isLastWhiteSpace, isNextWhiteSpace, canOpen, canClose, j, isSingle, stack, openQuote, closeQuote;
@@ -8914,27 +8914,27 @@ let useLabelWrapper = false;
 let useLabelAfter = false;
 let lineNumber = false;
 function attrSet2(token2, name2, value) {
-  const index2 = token2.attrIndex(name2);
+  const index = token2.attrIndex(name2);
   const attr = [name2, value];
-  if (index2 < 0) {
+  if (index < 0) {
     token2.attrPush(attr);
   } else {
     if (token2 && token2.attrs) {
-      token2.attrs[index2] = attr;
+      token2.attrs[index] = attr;
     }
   }
 }
-function parentToken(tokens, index2) {
-  const targetLevel = tokens[index2].level - 1;
-  for (let i = index2 - 1; i >= 0; i--) {
+function parentToken(tokens, index) {
+  const targetLevel = tokens[index].level - 1;
+  for (let i = index - 1; i >= 0; i--) {
     if (tokens[i].level === targetLevel) {
       return i;
     }
   }
   return -1;
 }
-function isTodoItem(tokens, index2) {
-  return isInline(tokens[index2]) && isParagraph(tokens[index2 - 1]) && isListItem(tokens[index2 - 2]) && startsWithTodoMarkdown(tokens[index2]);
+function isTodoItem(tokens, index) {
+  return isInline(tokens[index]) && isParagraph(tokens[index - 1]) && isListItem(tokens[index - 2]) && startsWithTodoMarkdown(tokens[index]);
 }
 function todoify(token2) {
   if (token2.children) {
@@ -9183,7 +9183,7 @@ var md2html = (md) => {
 };
 var preview = "";
 var preview_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$2 = defineComponent({
+const _sfc_main$3 = defineComponent({
   props: {
     modelValue: {
       type: String,
@@ -9229,8 +9229,8 @@ const _sfc_main$2 = defineComponent({
     };
   }
 });
-const _hoisted_1$5 = ["innerHTML"];
-function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$6 = ["innerHTML"];
+function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", {
     class: "editor-preview",
     ref: "previewBox",
@@ -9241,11 +9241,11 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", {
       class: "editor-preview-content markdown-body",
       innerHTML: _ctx.html
-    }, null, 8, _hoisted_1$5)
+    }, null, 8, _hoisted_1$6)
   ], 4);
 }
-var EditorPreview = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2], ["__scopeId", "data-v-e4aecd48"]]);
-const _hoisted_1$4 = {
+var EditorPreview = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3], ["__scopeId", "data-v-e4aecd48"]]);
+const _hoisted_1$5 = {
   viewBox: "0 0 1024 1024",
   xmlns: "http://www.w3.org/2000/svg",
   width: "128",
@@ -9259,10 +9259,10 @@ const _hoisted_3$3 = [
   _hoisted_2$3
 ];
 function render$2(_ctx, _cache) {
-  return openBlock(), createElementBlock("svg", _hoisted_1$4, _hoisted_3$3);
+  return openBlock(), createElementBlock("svg", _hoisted_1$5, _hoisted_3$3);
 }
 var IconMoon = { render: render$2 };
-const _hoisted_1$3 = {
+const _hoisted_1$4 = {
   viewBox: "0 0 1024 1024",
   xmlns: "http://www.w3.org/2000/svg",
   width: "128",
@@ -9276,10 +9276,10 @@ const _hoisted_3$2 = [
   _hoisted_2$2
 ];
 function render$1(_ctx, _cache) {
-  return openBlock(), createElementBlock("svg", _hoisted_1$3, _hoisted_3$2);
+  return openBlock(), createElementBlock("svg", _hoisted_1$4, _hoisted_3$2);
 }
 var IconSun = { render: render$1 };
-const _hoisted_1$2 = {
+const _hoisted_1$3 = {
   viewBox: "0 0 1024 1024",
   xmlns: "http://www.w3.org/2000/svg",
   width: "128",
@@ -9298,11 +9298,11 @@ const _hoisted_4$1 = [
   _hoisted_3$1
 ];
 function render(_ctx, _cache) {
-  return openBlock(), createElementBlock("svg", _hoisted_1$2, _hoisted_4$1);
+  return openBlock(), createElementBlock("svg", _hoisted_1$3, _hoisted_4$1);
 }
 var IconKeyboard = { render };
 var helper_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main$1 = defineComponent({
+const _sfc_main$2 = defineComponent({
   components: {
     IconMoon,
     IconSun,
@@ -9357,7 +9357,7 @@ const _sfc_main$1 = defineComponent({
   }
 });
 const _withScopeId = (n) => (pushScopeId("data-v-27d61a90"), n = n(), popScopeId(), n);
-const _hoisted_1$1 = { class: "editor-helper" };
+const _hoisted_1$2 = { class: "editor-helper" };
 const _hoisted_2 = { key: 0 };
 const _hoisted_3 = { class: "hotkey-box" };
 const _hoisted_4 = { class: "hotkey" };
@@ -9367,11 +9367,11 @@ const _hoisted_5 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createElem
     /* @__PURE__ */ createElementVNode("th", null, "\u8BF4\u660E")
   ])
 ], -1));
-function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_IconMoon = resolveComponent("IconMoon");
   const _component_IconSun = resolveComponent("IconSun");
   const _component_IconKeyboard = resolveComponent("IconKeyboard");
-  return openBlock(), createElementBlock("div", _hoisted_1$1, [
+  return openBlock(), createElementBlock("div", _hoisted_1$2, [
     renderSlot(_ctx.$slots, "top", {}, void 0, true),
     createElementVNode("ul", null, [
       _ctx.helper.theme ? (openBlock(), createElementBlock("li", _hoisted_2, [
@@ -9409,7 +9409,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     renderSlot(_ctx.$slots, "bottom", {}, void 0, true)
   ]);
 }
-var EditorHelper = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1], ["__scopeId", "data-v-27d61a90"]]);
+var EditorHelper = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2], ["__scopeId", "data-v-27d61a90"]]);
 let extend = /* @__PURE__ */ "lc,34,7n,7,7b,19,,,,2,,2,,,20,b,1c,l,g,,2t,7,2,6,2,2,,4,z,,u,r,2j,b,1m,9,9,,o,4,,9,,3,,5,17,3,3b,f,,w,1j,,,,4,8,4,,3,7,a,2,t,,1m,,,,2,4,8,,9,,a,2,q,,2,2,1l,,4,2,4,2,2,3,3,,u,2,3,,b,2,1l,,4,5,,2,4,,k,2,m,6,,,1m,,,2,,4,8,,7,3,a,2,u,,1n,,,,c,,9,,14,,3,,1l,3,5,3,,4,7,2,b,2,t,,1m,,2,,2,,3,,5,2,7,2,b,2,s,2,1l,2,,,2,4,8,,9,,a,2,t,,20,,4,,2,3,,,8,,29,,2,7,c,8,2q,,2,9,b,6,22,2,r,,,,,,1j,e,,5,,2,5,b,,10,9,,2u,4,,6,,2,2,2,p,2,4,3,g,4,d,,2,2,6,,f,,jj,3,qa,3,t,3,t,2,u,2,1s,2,,7,8,,2,b,9,,19,3,3b,2,y,,3a,3,4,2,9,,6,3,63,2,2,,1m,,,7,,,,,2,8,6,a,2,,1c,h,1r,4,1c,7,,,5,,14,9,c,2,w,4,2,2,,3,1k,,,2,3,,,3,1m,8,2,2,48,3,,d,,7,4,,6,,3,2,5i,1m,,5,ek,,5f,x,2da,3,3x,,2o,w,fe,6,2x,2,n9w,4,,a,w,2,28,2,7k,,3,,4,,p,2,5,,47,2,q,i,d,,12,8,p,b,1a,3,1c,,2,4,2,2,13,,1v,6,2,2,2,2,c,,8,,1b,,1f,,,3,2,2,5,2,,,16,2,8,,6m,,2,,4,,fn4,,kh,g,g,g,a6,2,gt,,6a,,45,5,1ae,3,,2,5,4,14,3,4,,4l,2,fx,4,ar,2,49,b,4w,,1i,f,1k,3,1d,4,2,2,1x,3,10,5,,8,1q,,c,2,1g,9,a,4,2,,2n,3,2,,,2,6,,4g,,3,8,l,2,1l,2,,,,,m,,e,7,3,5,5f,8,2,3,,,n,,29,,2,6,,,2,,,2,,2,6j,,2,4,6,2,,2,r,2,2d,8,2,,,2,2y,,,,2,6,,,2t,3,2,4,,5,77,9,,2,6t,,a,2,,,4,,40,4,2,2,4,,w,a,14,6,2,4,8,,9,6,2,3,1a,d,,2,ba,7,,6,,,2a,m,2,7,,2,,2,3e,6,3,,,2,,7,,,20,2,3,,,,9n,2,f0b,5,1n,7,t4,,1r,4,29,,f5k,2,43q,,,3,4,5,8,8,2,7,u,4,44,3,1iz,1j,4,1e,8,,e,,m,5,,f,11s,7,,h,2,7,,2,,5,79,7,c5,4,15s,7,31,7,240,5,gx7k,2o,3k,6o".split(",").map((s) => s ? parseInt(s, 36) : 1);
 for (let i = 1; i < extend.length; i++)
   extend[i] += extend[i - 1];
@@ -10101,8 +10101,8 @@ class ChangeSet extends ChangeDesc {
       if (ins >= 0) {
         sections[i] = ins;
         sections[i + 1] = len;
-        let index2 = i >> 1;
-        while (inserted.length < index2)
+        let index = i >> 1;
+        while (inserted.length < index)
           inserted.push(Text.empty);
         inserted.push(len ? doc2.slice(pos, pos + len) : Text.empty);
       }
@@ -10255,11 +10255,11 @@ function addSection(sections, len, ins, forceJoin = false) {
 function addInsert(values2, sections, value) {
   if (value.length == 0)
     return;
-  let index2 = sections.length - 2 >> 1;
-  if (index2 < values2.length) {
+  let index = sections.length - 2 >> 1;
+  if (index < values2.length) {
     values2[values2.length - 1] = values2[values2.length - 1].append(value);
   } else {
-    while (values2.length < index2)
+    while (values2.length < index)
       values2.push(Text.empty);
     values2.push(value);
   }
@@ -10400,12 +10400,12 @@ class SectionIter {
     return this.ins < 0 ? this.len : this.ins;
   }
   get text() {
-    let { inserted } = this.set, index2 = this.i - 2 >> 1;
-    return index2 >= inserted.length ? Text.empty : inserted[index2];
+    let { inserted } = this.set, index = this.i - 2 >> 1;
+    return index >= inserted.length ? Text.empty : inserted[index];
   }
   textBit(len) {
-    let { inserted } = this.set, index2 = this.i - 2 >> 1;
-    return index2 >= inserted.length && !len ? Text.empty : inserted[index2].slice(this.off, len == null ? void 0 : this.off + len);
+    let { inserted } = this.set, index = this.i - 2 >> 1;
+    return index >= inserted.length && !len ? Text.empty : inserted[index].slice(this.off, len == null ? void 0 : this.off + len);
   }
   forward(len) {
     if (len == this.len)
@@ -11466,19 +11466,19 @@ class StyleSet {
     let sheet = this.sheet;
     let pos = 0, j = 0;
     for (let i = 0; i < modules.length; i++) {
-      let mod = modules[i], index2 = this.modules.indexOf(mod);
-      if (index2 < j && index2 > -1) {
-        this.modules.splice(index2, 1);
+      let mod = modules[i], index = this.modules.indexOf(mod);
+      if (index < j && index > -1) {
+        this.modules.splice(index, 1);
         j--;
-        index2 = -1;
+        index = -1;
       }
-      if (index2 == -1) {
+      if (index == -1) {
         this.modules.splice(j++, 0, mod);
         if (sheet)
           for (let k = 0; k < mod.rules.length; k++)
             sheet.insertRule(mod.rules[k], pos++);
       } else {
-        while (j < index2)
+        while (j < index)
           pos += this.modules[j++].rules.length;
         pos += mod.rules.length;
         j++;
@@ -11595,8 +11595,8 @@ class RangeSet {
       size += chunk.value.length;
     return size;
   }
-  chunkEnd(index2) {
-    return this.chunkPos[index2] + this.chunk[index2].length;
+  chunkEnd(index) {
+    return this.chunkPos[index] + this.chunk[index].length;
   }
   update(updateSpec) {
     let { add: add3 = [], sort = false, filterFrom = 0, filterTo = this.length } = updateSpec;
@@ -11885,8 +11885,8 @@ class LayerCursor {
       }
     }
   }
-  setRangeIndex(index2) {
-    if (index2 == this.layer.chunk[this.chunkIndex].value.length) {
+  setRangeIndex(index) {
+    if (index == this.layer.chunk[this.chunkIndex].value.length) {
       this.chunkIndex++;
       if (this.skip) {
         while (this.chunkIndex < this.layer.chunk.length && this.skip.has(this.layer.chunk[this.chunkIndex]))
@@ -11894,7 +11894,7 @@ class LayerCursor {
       }
       this.rangeIndex = 0;
     } else {
-      this.rangeIndex = index2;
+      this.rangeIndex = index;
     }
   }
   nextChunk() {
@@ -11956,9 +11956,9 @@ class HeapCursor {
     }
   }
 }
-function heapBubble(heap, index2) {
-  for (let cur2 = heap[index2]; ; ) {
-    let childIndex = (index2 << 1) + 1;
+function heapBubble(heap, index) {
+  for (let cur2 = heap[index]; ; ) {
+    let childIndex = (index << 1) + 1;
     if (childIndex >= heap.length)
       break;
     let child = heap[childIndex];
@@ -11969,8 +11969,8 @@ function heapBubble(heap, index2) {
     if (cur2.compare(child) < 0)
       break;
     heap[childIndex] = cur2;
-    heap[index2] = child;
-    index2 = childIndex;
+    heap[index] = child;
+    index = childIndex;
   }
 }
 class SpanCursor {
@@ -12004,10 +12004,10 @@ class SpanCursor {
       this.removeActive(this.minActive);
     this.cursor.forward(pos, side);
   }
-  removeActive(index2) {
-    remove(this.active, index2);
-    remove(this.activeTo, index2);
-    remove(this.activeRank, index2);
+  removeActive(index) {
+    remove(this.active, index);
+    remove(this.activeTo, index);
+    remove(this.activeRank, index);
     this.minActive = findMinIndex(this.active, this.activeTo);
   }
   addActive(trackOpen) {
@@ -12125,15 +12125,15 @@ function sameValues(a, b) {
       return false;
   return true;
 }
-function remove(array, index2) {
-  for (let i = index2, e = array.length - 1; i < e; i++)
+function remove(array, index) {
+  for (let i = index, e = array.length - 1; i < e; i++)
     array[i] = array[i + 1];
   array.pop();
 }
-function insert(array, index2, value) {
-  for (let i = array.length - 1; i >= index2; i--)
+function insert(array, index, value) {
+  for (let i = array.length - 1; i >= index; i--)
     array[i + 1] = array[i];
-  array[index2] = value;
+  array[index] = value;
 }
 function findMinIndex(value, array) {
   let found = -1, foundPos = 1e9;
@@ -12299,10 +12299,10 @@ function isEquivalentPosition(node, off, targetNode, targetOff) {
   return targetNode ? scanFor(node, off, targetNode, targetOff, -1) || scanFor(node, off, targetNode, targetOff, 1) : false;
 }
 function domIndex(node) {
-  for (var index2 = 0; ; index2++) {
+  for (var index = 0; ; index++) {
     node = node.previousSibling;
     if (!node)
-      return index2;
+      return index;
   }
 }
 function scanFor(node, off, targetNode, targetOff, dir) {
@@ -13708,8 +13708,8 @@ class ContentBuilder {
     if (this.openStart < 0)
       this.openStart = openStart;
   }
-  filterPoint(from, to, value, index2) {
-    if (index2 < this.disallowBlockEffectsBelow && value instanceof PointDecoration) {
+  filterPoint(from, to, value, index) {
+    if (index < this.disallowBlockEffectsBelow && value instanceof PointDecoration) {
       if (value.block)
         throw new RangeError("Block decorations may not be specified via plugins");
       if (to > this.doc.lineAt(this.pos).to)
@@ -14013,14 +14013,14 @@ class BidiSpan {
   side(end, dir) {
     return this.dir == dir == end ? this.to : this.from;
   }
-  static find(order2, index2, level, assoc) {
+  static find(order2, index, level, assoc) {
     let maybe = -1;
     for (let i = 0; i < order2.length; i++) {
       let span2 = order2[i];
-      if (span2.from <= index2 && span2.to >= index2) {
+      if (span2.from <= index && span2.to >= index) {
         if (span2.level == level)
           return i;
-        if (maybe < 0 || (assoc != 0 ? assoc < 0 ? span2.from < index2 : span2.to > index2 : order2[maybe].level > span2.level))
+        if (maybe < 0 || (assoc != 0 ? assoc < 0 ? span2.from < index : span2.to > index : order2[maybe].level > span2.level))
           maybe = i;
       }
     }
@@ -18963,9 +18963,9 @@ class Tree {
 }
 Tree.empty = new Tree(NodeType.none, [], [], 0);
 class FlatBufferCursor {
-  constructor(buffer, index2) {
+  constructor(buffer, index) {
     this.buffer = buffer;
-    this.index = index2;
+    this.index = index;
   }
   get id() {
     return this.buffer[this.index - 4];
@@ -19000,24 +19000,24 @@ class TreeBuffer {
   }
   toString() {
     let result = [];
-    for (let index2 = 0; index2 < this.buffer.length; ) {
-      result.push(this.childString(index2));
-      index2 = this.buffer[index2 + 3];
+    for (let index = 0; index < this.buffer.length; ) {
+      result.push(this.childString(index));
+      index = this.buffer[index + 3];
     }
     return result.join(",");
   }
-  childString(index2) {
-    let id2 = this.buffer[index2], endIndex = this.buffer[index2 + 3];
+  childString(index) {
+    let id2 = this.buffer[index], endIndex = this.buffer[index + 3];
     let type = this.set.types[id2], result = type.name;
     if (/\W/.test(result) && !type.isError)
       result = JSON.stringify(result);
-    index2 += 4;
-    if (endIndex == index2)
+    index += 4;
+    if (endIndex == index)
       return result;
     let children = [];
-    while (index2 < endIndex) {
-      children.push(this.childString(index2));
-      index2 = this.buffer[index2 + 3];
+    while (index < endIndex) {
+      children.push(this.childString(index));
+      index = this.buffer[index + 3];
     }
     return result + "(" + children.join(",") + ")";
   }
@@ -19096,10 +19096,10 @@ function resolveNode(node, pos, side, overlays) {
   }
 }
 class TreeNode {
-  constructor(node, _from, index2, _parent) {
+  constructor(node, _from, index, _parent) {
     this.node = node;
     this._from = _from;
-    this.index = index2;
+    this.index = index;
     this._parent = _parent;
   }
   get type() {
@@ -19123,9 +19123,9 @@ class TreeNode {
         if (next instanceof TreeBuffer) {
           if (mode & 2)
             continue;
-          let index2 = next.findChild(0, next.buffer.length, dir, pos - start, side);
-          if (index2 > -1)
-            return new BufferNode(new BufferContext(parent, next, i, start), null, index2);
+          let index = next.findChild(0, next.buffer.length, dir, pos - start, side);
+          if (index > -1)
+            return new BufferNode(new BufferContext(parent, next, i, start), null, index);
         } else if (mode & 1 || (!next.type.isAnonymous || hasChild(next))) {
           let mounted;
           if (!(mode & 1) && next.props && (mounted = next.prop(NodeProp.mounted)) && !mounted.overlay)
@@ -19231,19 +19231,19 @@ function getChildren(node, type, before, after) {
   }
 }
 class BufferContext {
-  constructor(parent, buffer, index2, start) {
+  constructor(parent, buffer, index, start) {
     this.parent = parent;
     this.buffer = buffer;
-    this.index = index2;
+    this.index = index;
     this.start = start;
   }
 }
 class BufferNode {
-  constructor(context, _parent, index2) {
+  constructor(context, _parent, index) {
     this.context = context;
     this._parent = _parent;
-    this.index = index2;
-    this.type = context.buffer.set.types[context.buffer.buffer[index2]];
+    this.index = index;
+    this.type = context.buffer.set.types[context.buffer.buffer[index]];
   }
   get name() {
     return this.type.name;
@@ -19256,8 +19256,8 @@ class BufferNode {
   }
   child(dir, pos, side) {
     let { buffer } = this.context;
-    let index2 = buffer.findChild(this.index + 4, buffer.buffer[this.index + 3], dir, pos - this.context.start, side);
-    return index2 < 0 ? null : new BufferNode(this.context, this, index2);
+    let index = buffer.findChild(this.index + 4, buffer.buffer[this.index + 3], dir, pos - this.context.start, side);
+    return index < 0 ? null : new BufferNode(this.context, this, index);
   }
   get firstChild() {
     return this.child(1, 0, 4);
@@ -19275,8 +19275,8 @@ class BufferNode {
     if (!buffers)
       return null;
     let { buffer } = this.context;
-    let index2 = buffer.findChild(this.index + 4, buffer.buffer[this.index + 3], side > 0 ? 1 : -1, pos - this.context.start, side);
-    return index2 < 0 ? null : new BufferNode(this.context, this, index2);
+    let index = buffer.findChild(this.index + 4, buffer.buffer[this.index + 3], side > 0 ? 1 : -1, pos - this.context.start, side);
+    return index < 0 ? null : new BufferNode(this.context, this, index);
   }
   get parent() {
     return this._parent || this.context.parent.nextSignificantParent();
@@ -19365,12 +19365,12 @@ class TreeCursor {
     this.to = node.to;
     return true;
   }
-  yieldBuf(index2, type) {
-    this.index = index2;
+  yieldBuf(index, type) {
+    this.index = index;
     let { start, buffer } = this.buffer;
-    this.type = type || buffer.set.types[buffer.buffer[index2]];
-    this.from = start + buffer.buffer[index2 + 1];
-    this.to = start + buffer.buffer[index2 + 2];
+    this.type = type || buffer.set.types[buffer.buffer[index]];
+    this.from = start + buffer.buffer[index + 1];
+    this.to = start + buffer.buffer[index + 2];
     return true;
   }
   yield(node) {
@@ -19390,11 +19390,11 @@ class TreeCursor {
     if (!this.buffer)
       return this.yield(this._tree.nextChild(dir < 0 ? this._tree.node.children.length - 1 : 0, dir, pos, side, this.mode));
     let { buffer } = this.buffer;
-    let index2 = buffer.findChild(this.index + 4, buffer.buffer[this.index + 3], dir, pos - this.buffer.start, side);
-    if (index2 < 0)
+    let index = buffer.findChild(this.index + 4, buffer.buffer[this.index + 3], dir, pos - this.buffer.start, side);
+    if (index < 0)
       return false;
     this.stack.push(this.index);
-    return this.yieldBuf(index2);
+    return this.yieldBuf(index);
   }
   firstChild() {
     return this.enterChild(1, 0, 4);
@@ -19444,7 +19444,7 @@ class TreeCursor {
     return this.sibling(-1);
   }
   atLastNode(dir) {
-    let index2, parent, { buffer } = this;
+    let index, parent, { buffer } = this;
     if (buffer) {
       if (dir > 0) {
         if (this.index < buffer.buffer.buffer.length)
@@ -19454,13 +19454,13 @@ class TreeCursor {
           if (buffer.buffer.buffer[i + 3] < this.index)
             return false;
       }
-      ({ index: index2, parent } = buffer);
+      ({ index, parent } = buffer);
     } else {
-      ({ index: index2, _parent: parent } = this._tree);
+      ({ index, _parent: parent } = this._tree);
     }
-    for (; parent; { index: index2, _parent: parent } = parent) {
-      if (index2 > -1)
-        for (let i = index2 + dir, e = dir < 0 ? -1 : parent.node.children.length; i != e; i += dir) {
+    for (; parent; { index, _parent: parent } = parent) {
+      if (index > -1)
+        for (let i = index + dir, e = dir < 0 ? -1 : parent.node.children.length; i != e; i += dir) {
           let child = parent.node.children[i];
           if (this.mode & 1 || child instanceof TreeBuffer || !child.type.isAnonymous || hasChild(child))
             return false;
@@ -19498,16 +19498,16 @@ class TreeCursor {
     let cache = this.bufferNode, result = null, depth = 0;
     if (cache && cache.context == this.buffer) {
       scan:
-        for (let index2 = this.index, d = this.stack.length; d >= 0; ) {
+        for (let index = this.index, d = this.stack.length; d >= 0; ) {
           for (let c = cache; c; c = c._parent)
-            if (c.index == index2) {
-              if (index2 == this.index)
+            if (c.index == index) {
+              if (index == this.index)
                 return c;
               result = c;
               depth = d + 1;
               break scan;
             }
-          index2 = this.stack[--d];
+          index = this.stack[--d];
         }
     }
     for (let i = depth; i < this.stack.length; i++)
@@ -19551,9 +19551,9 @@ function buildTree(data2) {
     let startPos = start - parentStart;
     if (end - start <= maxBufferLength && (buffer2 = findBufferSize(cursor2.pos - minPos, inRepeat))) {
       let data3 = new Uint16Array(buffer2.size - buffer2.skip);
-      let endPos = cursor2.pos - buffer2.size, index2 = data3.length;
+      let endPos = cursor2.pos - buffer2.size, index = data3.length;
       while (cursor2.pos > endPos)
-        index2 = copyToBuffer(buffer2.start, data3, index2);
+        index = copyToBuffer(buffer2.start, data3, index);
       node = new TreeBuffer(data3, end - buffer2.start, nodeSet);
       startPos = buffer2.start - parentStart;
     } else {
@@ -19664,26 +19664,26 @@ function buildTree(data2) {
     }
     return result.size > 4 ? result : void 0;
   }
-  function copyToBuffer(bufferStart, buffer2, index2) {
+  function copyToBuffer(bufferStart, buffer2, index) {
     let { id: id2, start, end, size } = cursor2;
     cursor2.next();
     if (size >= 0 && id2 < minRepeatType) {
-      let startIndex = index2;
+      let startIndex = index;
       if (size > 4) {
         let endPos = cursor2.pos - (size - 4);
         while (cursor2.pos > endPos)
-          index2 = copyToBuffer(bufferStart, buffer2, index2);
+          index = copyToBuffer(bufferStart, buffer2, index);
       }
-      buffer2[--index2] = startIndex;
-      buffer2[--index2] = end - bufferStart;
-      buffer2[--index2] = start - bufferStart;
-      buffer2[--index2] = id2;
+      buffer2[--index] = startIndex;
+      buffer2[--index] = end - bufferStart;
+      buffer2[--index] = start - bufferStart;
+      buffer2[--index] = id2;
     } else if (size == -3) {
       contextHash = id2;
     } else if (size == -4) {
       lookAhead = id2;
     }
-    return index2;
+    return index;
   }
   let children = [], positions = [];
   while (cursor2.pos > 0)
@@ -19838,11 +19838,11 @@ class InnerParse {
   }
 }
 class ActiveOverlay {
-  constructor(parser2, predicate, mounts, index2, start, target2, prev) {
+  constructor(parser2, predicate, mounts, index, start, target2, prev) {
     this.parser = parser2;
     this.predicate = predicate;
     this.mounts = mounts;
-    this.index = index2;
+    this.index = index;
     this.start = start;
     this.target = target2;
     this.prev = prev;
@@ -21630,9 +21630,9 @@ function matchingNodes(node, dir, brackets) {
   if (byProp)
     return byProp;
   if (node.name.length == 1) {
-    let index2 = brackets.indexOf(node.name);
-    if (index2 > -1 && index2 % 2 == (dir < 0 ? 1 : 0))
-      return [brackets[index2 + dir]];
+    let index = brackets.indexOf(node.name);
+    if (index > -1 && index % 2 == (dir < 0 ? 1 : 0))
+      return [brackets[index + dir]];
   }
   return null;
 }
@@ -24125,8 +24125,8 @@ const panelConfig = /* @__PURE__ */ Facet.define({
 });
 function getPanel(view, panel) {
   let plugin = view.plugin(panelPlugin);
-  let index2 = plugin ? plugin.specs.indexOf(panel) : -1;
-  return index2 > -1 ? plugin.panels[index2] : null;
+  let index = plugin ? plugin.specs.indexOf(panel) : -1;
+  return index > -1 ? plugin.panels[index] : null;
 }
 const panelPlugin = /* @__PURE__ */ ViewPlugin.fromClass(class {
   constructor(view) {
@@ -24374,9 +24374,9 @@ class SearchCursor {
   match(code2, pos) {
     let match2 = null;
     for (let i = 0; i < this.matches.length; i += 2) {
-      let index2 = this.matches[i], keep = false;
-      if (this.query.charCodeAt(index2) == code2) {
-        if (index2 == this.query.length - 1) {
+      let index = this.matches[i], keep = false;
+      if (this.query.charCodeAt(index) == code2) {
+        if (index == this.query.length - 1) {
           match2 = { from: this.matches[i + 1], to: pos + 1 };
         } else {
           this.matches[i]++;
@@ -41811,21 +41811,21 @@ class Stack {
     if (!isReduce || this.pos == end) {
       this.buffer.push(term, start, end, size);
     } else {
-      let index2 = this.buffer.length;
-      if (index2 > 0 && this.buffer[index2 - 4] != 0)
-        while (index2 > 0 && this.buffer[index2 - 2] > end) {
-          this.buffer[index2] = this.buffer[index2 - 4];
-          this.buffer[index2 + 1] = this.buffer[index2 - 3];
-          this.buffer[index2 + 2] = this.buffer[index2 - 2];
-          this.buffer[index2 + 3] = this.buffer[index2 - 1];
-          index2 -= 4;
+      let index = this.buffer.length;
+      if (index > 0 && this.buffer[index - 4] != 0)
+        while (index > 0 && this.buffer[index - 2] > end) {
+          this.buffer[index] = this.buffer[index - 4];
+          this.buffer[index + 1] = this.buffer[index - 3];
+          this.buffer[index + 2] = this.buffer[index - 2];
+          this.buffer[index + 3] = this.buffer[index - 1];
+          index -= 4;
           if (size > 4)
             size -= 4;
         }
-      this.buffer[index2] = term;
-      this.buffer[index2 + 1] = start;
-      this.buffer[index2 + 2] = end;
-      this.buffer[index2 + 3] = size;
+      this.buffer[index] = term;
+      this.buffer[index + 1] = start;
+      this.buffer[index + 2] = end;
+      this.buffer[index + 3] = size;
     }
   }
   shift(action, next, nextEnd) {
@@ -41857,15 +41857,15 @@ class Stack {
       this.shift(action, next, nextEnd);
   }
   useNode(value, next) {
-    let index2 = this.p.reused.length - 1;
-    if (index2 < 0 || this.p.reused[index2] != value) {
+    let index = this.p.reused.length - 1;
+    if (index < 0 || this.p.reused[index] != value) {
       this.p.reused.push(value);
-      index2++;
+      index++;
     }
     let start = this.pos;
     this.reducePos = this.pos = start + value.length;
     this.pushState(next, start);
-    this.buffer.push(index2, start, this.reducePos, -1);
+    this.buffer.push(index, start, this.reducePos, -1);
     if (this.curContext)
       this.updateContext(this.curContext.tracker.reuse(this.curContext.context, value, this, this.p.stream.reset(this.pos - value.length)));
   }
@@ -42055,10 +42055,10 @@ class SimulatedStack {
   }
 }
 class StackBufferCursor {
-  constructor(stack, pos, index2) {
+  constructor(stack, pos, index) {
     this.stack = stack;
     this.pos = pos;
-    this.index = index2;
+    this.index = index;
     this.buffer = stack.buffer;
     if (this.index == 0)
       this.maybeNext();
@@ -42125,19 +42125,19 @@ class InputStream {
     this.readNext();
   }
   resolveOffset(offset, assoc) {
-    let range2 = this.range, index2 = this.rangeIndex;
+    let range2 = this.range, index = this.rangeIndex;
     let pos = this.pos + offset;
     while (pos < range2.from) {
-      if (!index2)
+      if (!index)
         return null;
-      let next = this.ranges[--index2];
+      let next = this.ranges[--index];
       pos -= range2.from - next.to;
       range2 = next;
     }
     while (assoc < 0 ? pos > range2.to : pos >= range2.to) {
-      if (index2 == this.ranges.length - 1)
+      if (index == this.ranges.length - 1)
         return null;
-      let next = this.ranges[++index2];
+      let next = this.ranges[++index];
       pos += next.from - range2.to;
       range2 = next;
     }
@@ -42303,14 +42303,14 @@ function readToken(data2, input, stack, group) {
         }
       for (let next = input.next, low = 0, high = data2[state + 2]; low < high; ) {
         let mid2 = low + high >> 1;
-        let index2 = accEnd + mid2 + (mid2 << 1);
-        let from = data2[index2], to = data2[index2 + 1];
+        let index = accEnd + mid2 + (mid2 << 1);
+        let from = data2[index], to = data2[index + 1];
         if (next < from)
           high = mid2;
         else if (next >= to)
           low = mid2 + 1;
         else {
-          state = data2[index2 + 2];
+          state = data2[index + 2];
           input.advance();
           continue scan;
         }
@@ -42416,15 +42416,15 @@ class FragmentCursor {
         this.nextFragment();
         return null;
       }
-      let top2 = this.trees[last], index2 = this.index[last];
-      if (index2 == top2.children.length) {
+      let top2 = this.trees[last], index = this.index[last];
+      if (index == top2.children.length) {
         this.trees.pop();
         this.start.pop();
         this.index.pop();
         continue;
       }
-      let next = top2.children[index2];
-      let start = this.start[last] + top2.positions[index2];
+      let next = top2.children[index];
+      let start = this.start[last] + top2.positions[index];
       if (start > pos) {
         this.nextStart = start;
         return null;
@@ -42535,16 +42535,16 @@ class TokenCache {
       token2.end = Math.min(stack.p.stream.end, stack.pos + 1);
     }
   }
-  putAction(action, token2, end, index2) {
-    for (let i = 0; i < index2; i += 3)
+  putAction(action, token2, end, index) {
+    for (let i = 0; i < index; i += 3)
       if (this.actions[i] == action)
-        return index2;
-    this.actions[index2++] = action;
-    this.actions[index2++] = token2;
-    this.actions[index2++] = end;
-    return index2;
+        return index;
+    this.actions[index++] = action;
+    this.actions[index++] = token2;
+    this.actions[index++] = end;
+    return index;
   }
-  addActions(stack, token2, end, index2) {
+  addActions(stack, token2, end, index) {
     let { state } = stack, { parser: parser2 } = stack.p, { data: data2 } = parser2;
     for (let set2 = 0; set2 < 2; set2++) {
       for (let i = parser2.stateSlot(state, set2 ? 2 : 1); ; i += 3) {
@@ -42552,16 +42552,16 @@ class TokenCache {
           if (data2[i + 1] == 1) {
             i = pair(data2, i + 2);
           } else {
-            if (index2 == 0 && data2[i + 1] == 2)
-              index2 = this.putAction(pair(data2, i + 2), token2, end, index2);
+            if (index == 0 && data2[i + 1] == 2)
+              index = this.putAction(pair(data2, i + 2), token2, end, index);
             break;
           }
         }
         if (data2[i] == token2)
-          index2 = this.putAction(pair(data2, i + 1), token2, end, index2);
+          index = this.putAction(pair(data2, i + 1), token2, end, index);
       }
     }
-    return index2;
+    return index;
   }
 }
 var Rec;
@@ -49721,7 +49721,7 @@ var HotKeyTypes = /* @__PURE__ */ ((HotKeyTypes2) => {
 const defaultOptions = {
   initValue: ""
 };
-class MarkdownEditor extends BaseEditor {
+class MarkdownEditor$1 extends BaseEditor {
   constructor(id2, options) {
     super(options == null ? void 0 : options.config);
     __publicField(this, "options", defaultOptions);
@@ -50206,10 +50206,10 @@ ${insertion}
         const text3 = state.sliceDoc(range2.from, range2.to);
         const textLines = text3.split("\n");
         let offset = 0;
-        textLines.forEach((textLine, index2) => {
-          const _insertion = insertion.replace(/\{num\}/g, (index2 + 1).toString());
+        textLines.forEach((textLine, index) => {
+          const _insertion = insertion.replace(/\{num\}/g, (index + 1).toString());
           offset += _insertion.length;
-          textLines[index2] = _insertion + textLine;
+          textLines[index] = _insertion + textLine;
         });
         const newText = textLines.join("\n");
         return {
@@ -50283,7 +50283,7 @@ ${insertion}
   }
 }
 var index_vue_vue_type_style_index_0_scoped_true_lang = "";
-const _sfc_main = defineComponent({
+const _sfc_main$1 = defineComponent({
   name: "MarkdownEditor",
   props: {
     modelValue: {
@@ -50343,7 +50343,7 @@ const _sfc_main = defineComponent({
     });
     onMounted(() => {
       nextTick(() => {
-        editor = new MarkdownEditor(`#${prefix + id2}`, {
+        editor = new MarkdownEditor$1(`#${prefix + id2}`, {
           initValue: props.modelValue
         });
         editor.events.change = (update, value) => {
@@ -50414,8 +50414,8 @@ const _sfc_main = defineComponent({
     };
   }
 });
-const _hoisted_1 = ["id"];
-function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+const _hoisted_1$1 = ["id"];
+function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_editor_upload = resolveComponent("editor-upload");
   const _component_editor_dialog = resolveComponent("editor-dialog");
   const _component_editor_table = resolveComponent("editor-table");
@@ -50428,7 +50428,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     createElementVNode("div", {
       id: _ctx.id,
       class: "content"
-    }, null, 8, _hoisted_1),
+    }, null, 8, _hoisted_1$1),
     createVNode(_component_editor_dialog, {
       modelValue: _ctx.uploadVisible,
       "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.uploadVisible = $event),
@@ -50472,5 +50472,51 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     }, null, 8, ["modelValue", "helper", "onThemeChange"])
   ], 2);
 }
-var index = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-0c422a8e"]]);
-export { index as MarkdownEditor };
+var MarkdownEditor = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1], ["__scopeId", "data-v-0c422a8e"]]);
+var App_vue_vue_type_style_index_0_lang = "";
+const _sfc_main = defineComponent({
+  components: {
+    MarkdownEditor
+  },
+  setup() {
+    const value = ref(`## \u81EA\u5B9A\u4E49\u4E3B\u9898
+
+Element \u9ED8\u8BA4\u63D0\u4F9B\u4E00\u5957\u4E3B\u9898\uFF0CCSS \u547D\u540D\u91C7\u7528 BEM \u7684\u98CE\u683C\uFF0C\u65B9\u4FBF\u4F7F\u7528\u8005\u8986\u76D6\u6837\u5F0F\u3002\u6211\u4EEC\u63D0\u4F9B\u4E86\u56DB\u79CD\u65B9\u6CD5\uFF0C\u53EF\u4EE5\u8FDB\u884C\u4E0D\u540C\u7A0B\u5EA6\u7684\u6837\u5F0F\u81EA\u5B9A\u4E49\u3002
+
+## \u4E3B\u9898\u7F16\u8F91\u5668
+
+\u4F7F\u7528\u5728\u7EBF\u4E3B\u9898\u7F16\u8F91\u5668\uFF0C\u53EF\u4EE5\u4FEE\u6539\u5B9A\u5236 Element \u6240\u6709\u5168\u5C40\u548C\u7EC4\u4EF6\u7684 Design Tokens\uFF0C\u5E76\u53EF
+\u4EE5\u65B9\u4FBF\u5730\u5B9E\u65F6\u9884\u89C8\u6837\u5F0F\u6539\u53D8\u540E\u7684\u89C6\u89C9\u3002\u540C\u65F6\u5B83\u8FD8\u53EF\u4EE5\u57FA\u4E8E\u65B0\u7684\u5B9A\u5236\u6837\u5F0F\u751F\u6210\u5B8C\u6574\u7684\u6837\u5F0F\u6587\u4EF6\u5305\uFF0C\u4F9B
+\u76F4\u63A5\u4E0B\u8F7D\u4F7F\u7528\uFF08\u5173\u4E8E\u5982\u4F55\u4F7F\u7528\u4E0B\u8F7D\u7684\u4E3B\u9898\u5305\uFF0C\u8BF7\u53C2\u8003\u672C\u8282\u300C\u5F15\u5165\u81EA\u5B9A\u4E49\u4E3B\u9898\u300D\u90E8\u5206\uFF09\u3002
+
+\u4E5F\u53EF\u4EE5\u4F7F\u7528\u4E3B\u9898\u7F16\u8F91\u5668 Chrome \u63D2\u4EF6\uFF0C\u5728\u4EFB\u4F55\u4F7F\u7528 Element \u5F00\u53D1\u7684\u7F51\u7AD9\u4E0A\u914D\u7F6E\u5E76\u5B9E\u65F6\u9884\u89C8\u4E3B\u9898\u3002`);
+    return {
+      value,
+      hotKeyHandler(val) {
+        const { type } = val;
+        if (type === "Ctrl-s") {
+          console.log(1e3);
+        }
+      },
+      changeHandler(val) {
+        console.log(value);
+      }
+    };
+  }
+});
+const _hoisted_1 = { class: "codemirror-demo" };
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_MarkdownEditor = resolveComponent("MarkdownEditor");
+  return openBlock(), createElementBlock("div", _hoisted_1, [
+    createVNode(_component_MarkdownEditor, {
+      modelValue: _ctx.value,
+      "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.value = $event),
+      helper: { theme: true },
+      onHotKey: _ctx.hotKeyHandler,
+      onChange: _ctx.changeHandler
+    }, null, 8, ["modelValue", "onHotKey", "onChange"])
+  ]);
+}
+var App = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+createApp(App).mount("#app");
+export { MarkdownEditor };

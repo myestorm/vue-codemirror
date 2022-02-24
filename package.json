@@ -1,12 +1,12 @@
 {
   "name": "@totonoo/vue-codemirror",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "main": "./dist/vue-codemirror.umd.js",
   "module": "./dist/vue-codemirror.es.js",
-  "types": "vue-codemirror.d.ts",
+  "typings": "./dist_types/main.d.ts",
   "files": [
     "dist/*",
-    "vue-codemirror.d.ts"
+    "dist_types/*"
   ],
   "exports": {
     ".": {
@@ -20,7 +20,8 @@
   },
   "scripts": {
     "dev": "vite --host",
-    "build": "vue-tsc --noEmit && vite build",
+    "build_o": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --declaration --emitDeclarationOnly && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
