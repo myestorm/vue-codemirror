@@ -65,7 +65,7 @@ export default defineComponent({
   setup (props, ctx) {
     const prefix = 'totonoo-markdown-editor-'
     const id = uuidv4()
-    const rootBox = ref(null)
+    const rootBox = ref()
     
     let editor: MarkdownEditor
 
