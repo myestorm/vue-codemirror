@@ -26,6 +26,12 @@ import EditorHelper from '../core/helper.vue'
 
 import MarkdownEditor, { HotKeyTypes } from './index'
 
+export interface MDHotKeyValueType<T> {
+  type: HotKeyTypes,
+  value: T,
+  view: EditorView
+}
+
 export default defineComponent({
   name: 'MarkdownEditor',
   props: {
@@ -122,19 +128,19 @@ export default defineComponent({
         // 快捷键
         editor.hotKey = <T>(type: HotKeyTypes, value: T, view: EditorView): void => {
           switch (type) {
-            case 'Ctrl-Alt-m': { // 插入媒体
+            case HotKeyTypes.ctrlAltM: { // 插入媒体
               uploadVisible.value = true
               break
             }
-            case 'Ctrl-Alt-t': { // 插入表格
+            case HotKeyTypes.ctrlAltT: { // 插入表格
               tableVisible.value = true
               break
             }
-            case 'Ctrl-Alt-p': { // 预览
+            case HotKeyTypes.ctrlAltP: { // 预览
               previewVisible.value = true
               break
             }
-            case 'F11': { // 全屏
+            case HotKeyTypes.F11: { // 全屏
               isFullscreen.value = !isFullscreen.value
               break
             }
@@ -191,6 +197,9 @@ export default defineComponent({
   --input-text-color: rgba(0, 0, 0, 0.9);
   --input-text-bg: rgba(0, 0, 0, 0.06);
   --input-text-hover-bg: rgba(0,0,0, 0.1);
+
+  --scroll-bar-color: #888888;
+  --scroll-track-color: #dddddd;
   &.dark {
     --color-bg: #2a2a2b;
     --color-text: #d4d4d4;
@@ -201,11 +210,27 @@ export default defineComponent({
     --input-text-color: rgba(255, 255, 255, 0.9);
     --input-text-bg: rgba(255, 255, 255, 0.08);
     --input-text-hover-bg: rgba(255, 255, 255, 0.16);
+
+    --scroll-bar-color: #444444;
+    --scroll-track-color: #000000;
   }
 
   width: 100%;
   height: 100%;
   position: relative;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 1px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: var(--scroll-bar-color);
+  }
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+    background: var(--scroll-track-color);
+  }
 
   &.editor-fullscreen {
     position: fixed;

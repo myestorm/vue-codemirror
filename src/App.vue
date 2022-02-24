@@ -1,12 +1,12 @@
 <template>
   <div class="codemirror-demo">
-    <MarkdownEditor v-model="value" :helper="{ theme: true }" />
+    <MarkdownEditor v-model="value" :helper="{ theme: true }" @hotKey="hotKeyHandler" @change="changeHandler" />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 
-import MarkdownEditor from './components/editor/markdown/index.vue'
+import MarkdownEditor, { MDHotKeyValueType } from './components/editor/markdown/index.vue'
 
 export default defineComponent({
   components: {
@@ -25,7 +25,16 @@ Element 默认提供一套主题，CSS 命名采用 BEM 的风格，方便使用
 
 也可以使用主题编辑器 Chrome 插件，在任何使用 Element 开发的网站上配置并实时预览主题。`)
   return {
-    value
+    value,
+    hotKeyHandler (val: MDHotKeyValueType<string | null>) {
+      const { type } = val
+      if(type === 'Ctrl-s') {
+        console.log(1000)
+      }
+    },
+    changeHandler (val: string) {
+      console.log(value)
+    }
   }
 
   },
