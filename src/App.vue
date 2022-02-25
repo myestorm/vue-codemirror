@@ -13,17 +13,23 @@ export default defineComponent({
     MarkdownEditor
   },
   setup () {
-    const value = ref(`## 自定义主题
+    const value = ref(`## Markdown是什么？
 
-Element 默认提供一套主题，CSS 命名采用 BEM 的风格，方便使用者覆盖样式。我们提供了四种方法，可以进行不同程度的样式自定义。
+Markdown是一种轻量级标记语言，它以纯文本形式(易读、易写、易更改)编写文档，并最终以HTML格式发布。
+Markdown也可以理解为将以MARKDOWN语法编写的语言转换成HTML内容的工具。
 
-## 主题编辑器
+## 谁创造了它？
 
-使用在线主题编辑器，可以修改定制 Element 所有全局和组件的 Design Tokens，并可
-以方便地实时预览样式改变后的视觉。同时它还可以基于新的定制样式生成完整的样式文件包，供
-直接下载使用（关于如何使用下载的主题包，请参考本节「引入自定义主题」部分）。
+它由 \`Aaron Swartz\` 和 \`John Gruber\` 共同设计，Aaron Swartz就是那位于去年（2013年1月11日）自杀,有着开挂一般人生经历的程序员。维基百科对他的介绍是：软件工程师、作家、政治组织者、互联网活动家、维基百科人。
 
-也可以使用主题编辑器 Chrome 插件，在任何使用 Element 开发的网站上配置并实时预览主题。`)
+他有着足以让你跪拜的人生经历：
+
+- 14岁参与RSS 1.0规格标准的制订。
+- 2004年入读斯坦福，之后退学。
+- 2005年创建Infogami，之后与Reddit合并成为其合伙人。
+- 2010年创立求进会（Demand Progress），积极参与禁止网络盗版法案（SOPA）活动，最终该提案被撤回。
+- 2011年7月19日，因被控从MIT和JSTOR下载480万篇学术论文并以免费形式上传于网络被捕。
+- 2013年1月自杀身亡。`)
   return {
     value,
     hotKeyHandler (val: MDHotKeyValueType<string | null>) {

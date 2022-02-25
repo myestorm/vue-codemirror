@@ -154,6 +154,8 @@ export default defineComponent({
             view
           })
         }
+
+        ctx.emit('ready', editor)
       })
     })
     return {
