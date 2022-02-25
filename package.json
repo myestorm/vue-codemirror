@@ -52,9 +52,6 @@
     "vue-tsc": "^0.29.8"
   },
   "description": "codemirror vue组件",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/myestorm/vue-codemirror.git"
