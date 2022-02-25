@@ -1,6 +1,6 @@
 {
   "name": "@totonoo/vue-codemirror",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "./dist/vue-codemirror.umd.js",
   "module": "./dist/vue-codemirror.es.js",
   "typings": "./dist_types/main.d.ts",
