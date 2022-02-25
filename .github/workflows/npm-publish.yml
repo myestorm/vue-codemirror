@@ -31,8 +31,7 @@ jobs:
       - run: npm run build
       - run: |
           npm config set //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}
-          # npm login --scope=@totonoo --registry=https://registry.npmjs.org/
-          echo 'haha--${NPM_TOKEN}''
+          echo 'haha--${NODE_AUTH_TOKEN}'
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
