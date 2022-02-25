@@ -1,6 +1,6 @@
 {
   "name": "@totonoo/vue-codemirror",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "./dist/vue-codemirror.umd.js",
   "module": "./dist/vue-codemirror.es.js",
   "typings": "./dist_types/main.d.ts",
@@ -57,8 +57,8 @@
   },
   "keywords": [
     "vue3",
-    "codemirror",
-    "next"
+    "codemirror next",
+    "typescript"
   ],
   "author": "totonoo",
   "license": "MIT",
