@@ -30,8 +30,9 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: |
-          npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
-          echo ${NPM_TOKEN}
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm login --scope=@totonoo --registry=https://registry.npmjs.org/
+          echo 'haha--${NPM_TOKEN}''
           npm publish --access public
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
