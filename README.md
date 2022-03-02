@@ -9,7 +9,7 @@ codemirror vue组件，支持TS，使用的是codemirror 6。支持明暗模式�
 首先需要安装 `npm`
 
 ```bash
-npm install vue-codemirror --save
+npm install @totonoo/vue-codemirror --save
 ```
 
 ### 基础使用
