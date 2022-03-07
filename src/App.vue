@@ -1,7 +1,7 @@
 <template>
   <button @click="addClass">{{ btn }}模式</button>
   <div class="codemirror-demo">
-    <MarkdownEditor v-model="value" :helper="{ theme: true, hotkey: false }" @hotKey="hotKeyHandler" @change="changeHandler" />
+    <MarkdownEditor v-model="value" :helper="{ theme: false, hotkey: false }" @hotKey="hotKeyHandler" @change="changeHandler" />
   </div>
 </template>
 <script lang="ts">

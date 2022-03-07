@@ -11,6 +11,7 @@
       <editor-preview :root="rootBox" v-model="modelValue"></editor-preview>
     </editor-dialog>
     <editor-helper v-model="myTheme" :helper="helper" @themeChange="themeChange"></editor-helper>
+    <editor-toolbar @btnClick="btnClickHandler"></editor-toolbar>
   </div>
 </template>
 <script lang="ts">
@@ -23,6 +24,7 @@ import EditorUpload from '../core/upload.vue'
 import EditorTable from '../core/table.vue'
 import EditorPreview from '../core/preview.vue'
 import EditorHelper from '../core/helper.vue'
+import EditorToolbar, { ToolbarItemType, ToolbarClickTypes } from './editor-toolbar.vue'
 
 import MarkdownEditor, { HotKeyTypes } from './index'
 
@@ -58,7 +60,8 @@ export default defineComponent({
     EditorUpload,
     EditorTable,
     EditorPreview,
-    EditorHelper
+    EditorHelper,
+    EditorToolbar
   },
   emits: ['ready', 'update:modelValue', 'change', 'focus', 'blur', 'selectionChange', 'hotKey'],
   setup (props, ctx) {
@@ -160,6 +163,22 @@ export default defineComponent({
       }
     })
 
+    const btnClickHandler = (data: ToolbarItemType) => {
+      const { type } = data
+      switch (type) {
+        case ToolbarClickTypes.head : {
+          break
+        }
+        case ToolbarClickTypes.table : {
+          tableVisible.value = true
+          break
+        }
+        default: {
+          break
+        }
+      }
+    }
+
     onMounted(() => {
       nextTick(() => {
         // 初始化
@@ -229,7 +248,8 @@ export default defineComponent({
       previewDone,
       isFullscreen,
       myTheme,
-      themeChange
+      themeChange,
+      btnClickHandler
     }
   },
 })
