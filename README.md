@@ -92,3 +92,45 @@ interface MDHotKeyValueType<T> {
 |  Shift-Alt-i   |  内联代码   |
 |  Shift-Alt-b   |  块级代码   |
 |  Shift-Alt-l   |  链接   |
+
+
+### 基础配置
+
+```typescript
+// 基本配置
+const config = {
+  theme: 'light', // 默认模式
+  themeAttr: 'theme' // 同步白天黑夜模式，用body上的控制属性的名称
+}
+
+// 右侧悬浮按钮控制
+const helper = {
+  theme: true, // 是否显示控制白天黑夜模式按钮
+  hotkey: true // 是否显示展示快捷键按钮
+}
+
+// <MarkdownEditor v-model="value" :helper="helper" :config="config" @hotKey="hotKeyHandler" @change="changeHandler" />
+```
+
+### 常见问题
+
+#### 本地查看效果
+
+```sh
+git clone https://github.com/myestorm/vue-codemirror.git
+npm install
+npm run dev
+```
+
+http://localhost:3000/
+
+#### 如何修改背景颜色？
+
+在编辑器的任意一个父级节点注入即可。
+
+```css
+.codemirror-demo {
+  --editor-bg: #f5f5f5;
+  --editor-bg-dark: #000000;
+}
+```

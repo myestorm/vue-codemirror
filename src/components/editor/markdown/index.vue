@@ -10,7 +10,7 @@
     <editor-dialog v-model="previewVisible" title="预览" width="760px">
       <editor-preview :root="rootBox" v-model="modelValue"></editor-preview>
     </editor-dialog>
-    <editor-helper v-model="theme" :helper="helper" @themeChange="themeChange"></editor-helper>
+    <editor-helper v-model="myTheme" :helper="helper" @themeChange="themeChange"></editor-helper>
   </div>
 </template>
 <script lang="ts">
@@ -25,6 +25,11 @@ import EditorPreview from '../core/preview.vue'
 import EditorHelper from '../core/helper.vue'
 
 import MarkdownEditor, { HotKeyTypes } from './index'
+
+const defConfig = {
+  theme: 'light',
+  themeAttr: 'theme'
+}
 
 export interface MDHotKeyValueType<T> {
   type: HotKeyTypes,
@@ -41,17 +46,11 @@ export default defineComponent({
     },
     config: {
       type: Object,
-      default: () => {
-        return {}
-      }
+      default: null
     },
     helper: {
       type: Object,
-      default: () => {
-        return {
-          theme: true
-        }
-      }
+      default: null
     }
   },
   components: {
@@ -66,6 +65,8 @@ export default defineComponent({
     const prefix = 'totonoo-markdown-editor-'
     const id = uuidv4()
     const rootBox = ref()
+
+    const config = Object.assign({}, defConfig, props.config)
     
     let editor: MarkdownEditor
 
@@ -94,7 +95,63 @@ export default defineComponent({
     const isFullscreen = ref(false)
 
     // 皮肤
-    const theme = ref(props.config?.theme || 'light')
+    const myTheme = ref(config.theme)
+
+    const getTheme = () => {
+      const attr = config.themeAttr
+      const body = document.querySelector('body')
+      return body ? (body.getAttribute(attr) || config.theme) : 'light'
+    }
+    myTheme.value = getTheme()
+
+    const addThemeClass = (className: string | null) => {
+      const attr = config.themeAttr
+      const body = document.querySelector('body')
+      if (body) {
+        const theme = body.getAttribute(attr)
+        if (theme !== className) {
+          if (theme) {
+            body.removeAttribute(attr)
+          } else {
+            body.setAttribute(attr, 'dark')
+          }
+        }
+      }
+    }
+
+    const themeChange = (theme: string) => {
+      const _theme = theme === 'dark' ? editor.themeDark : editor.themeLight
+      const _parent = editor.box.parentElement
+      editor.view.dispatch({
+        effects: editor.theme.reconfigure(_theme)
+      })
+      if (_parent) {
+        if (theme === 'dark') {
+          _parent.classList.add('dark')
+        } else {
+          _parent.classList.remove('dark')
+        }
+      }
+      addThemeClass(theme === 'dark' ? 'dark' : null)
+      if (theme !== myTheme.value) {
+        myTheme.value = theme
+      }
+    }
+
+    // 监听body属性变化，同步皮肤模式
+    const body = document.querySelector('body')
+    const observer = new MutationObserver((mutationsList, observer) => {
+      for(let mutation of mutationsList) {
+        if (mutation.type === 'attributes') {
+          const target = mutation.target as HTMLElement
+          const val = target.getAttribute(config.themeAttr) || ''
+          themeChange(val)
+        }
+      }
+    })
+    if (body) {
+      observer.observe(body, { subtree: false, childList: false, attributes: true })
+    }
 
     // 监听value变化，同步编辑器
     watch(() => props.modelValue, (val) => {
@@ -107,7 +164,10 @@ export default defineComponent({
       nextTick(() => {
         // 初始化
         editor = new MarkdownEditor(`#${prefix + id}`, {
-          initValue: props.modelValue
+          initValue: props.modelValue,
+          config: {
+            theme: myTheme.value
+          }
         })
 
         // 事件
@@ -168,21 +228,8 @@ export default defineComponent({
       previewVisible,
       previewDone,
       isFullscreen,
-      theme,
-      themeChange (theme: string) {
-        const _theme = theme === 'dark' ? editor.themeDark : editor.themeLight
-        const _parent = editor.box.parentElement
-        editor.view.dispatch({
-          effects: editor.theme.reconfigure(_theme)
-        })
-        if (_parent) {
-          if (theme === 'dark') {
-            _parent.classList.add('dark')
-          } else {
-            _parent.classList.remove('dark')
-          }
-        }
-      }
+      myTheme,
+      themeChange
     }
   },
 })

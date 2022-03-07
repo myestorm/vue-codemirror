@@ -29,7 +29,7 @@ const chalky = "#e5c07b",
 export const totonooDarkTheme = EditorView.theme({
   "&": {
     color: ivory,
-    backgroundColor: background,
+    backgroundColor: `var(--editor-bg-dark, ${background})`,
     height: '100%'
   },
 
@@ -63,7 +63,7 @@ export const totonooDarkTheme = EditorView.theme({
   },
 
   ".cm-gutters": {
-    backgroundColor: background,
+    backgroundColor: `var(--editor-bg-dark, ${background})`,
     color: stone,
     border: "none",
     fontFamily,

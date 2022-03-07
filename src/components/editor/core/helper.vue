@@ -1,12 +1,12 @@
 <template>
-  <div class="editor-helper">
+  <div class="editor-helper" v-if="showBox()">
     <slot name="top"></slot>
     <ul>
-      <li v-if="helper.theme">
+      <li v-if="xHelper.theme">
         <button @click="changeTheme('light')" v-if="modelValue == 'dark'"><IconMoon /></button>
         <button @click="changeTheme('dark')" v-else><IconSun /></button>
       </li>
-      <li class="hotkey-box">
+      <li class="hotkey-box" v-if="xHelper.hotkey">
         <button><IconKeyboard /></button>
         <div class="hotkey">
           <table>
@@ -36,6 +36,11 @@ import IconMoon from '../theme/icon/moon.svg?component'
 import IconSun from '../theme/icon/sun.svg?component'
 import IconKeyboard from '../theme/icon/keyboard.svg?component'
 
+const defHelper = {
+  theme: true,
+  hotkey: true
+}
+
 export default defineComponent({
   components: {
     IconMoon,
@@ -51,12 +56,13 @@ export default defineComponent({
       type: Object,
       default: () => {
         return {
-          theme: true
+          ...defHelper
         }
       }
     }
   },
   setup (props, ctx) {
+    const helper = Object.assign({}, defHelper, props.helper)
     const list = {
       'Ctrl-s': '保存',
       'Ctrl-b': '美化、格式化',
@@ -83,6 +89,10 @@ export default defineComponent({
     }
     return {
       list,
+      xHelper: helper,
+      showBox () {
+        return helper.theme || helper.hotkey
+      },
       changeTheme (theme: string) {
         ctx.emit('update:modelValue', theme)
         ctx.emit('themeChange', theme)

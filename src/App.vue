@@ -1,6 +1,7 @@
 <template>
+  <button @click="addClass">{{ btn }}模式</button>
   <div class="codemirror-demo">
-    <MarkdownEditor v-model="value" :helper="{ theme: true }" @hotKey="hotKeyHandler" @change="changeHandler" />
+    <MarkdownEditor v-model="value" :helper="{ theme: true, hotkey: false }" @hotKey="hotKeyHandler" @change="changeHandler" />
   </div>
 </template>
 <script lang="ts">
@@ -30,8 +31,10 @@ Markdown也可以理解为将以MARKDOWN语法编写的语言转换成HTML内容
 - 2010年创立求进会（Demand Progress），积极参与禁止网络盗版法案（SOPA）活动，最终该提案被撤回。
 - 2011年7月19日，因被控从MIT和JSTOR下载480万篇学术论文并以免费形式上传于网络被捕。
 - 2013年1月自杀身亡。`)
+  const btn = ref('白天')
   return {
     value,
+    btn,
     hotKeyHandler (val: MDHotKeyValueType<string | null>) {
       const { type } = val
       if(type === 'Ctrl-s') {
@@ -40,6 +43,20 @@ Markdown也可以理解为将以MARKDOWN语法编写的语言转换成HTML内容
     },
     changeHandler (val: string) {
       console.log(value)
+    },
+    addClass () {
+      const attr = 'theme'
+      const body = document.querySelector('body')
+      if (body) {
+        const theme = body.getAttribute(attr)
+        if (theme) {
+          body.removeAttribute(attr)
+          btn.value = '白天'
+        } else {
+          body.setAttribute(attr, 'dark')
+          btn.value = '黑夜'
+        }
+      }
     }
   }
 
@@ -48,6 +65,8 @@ Markdown也可以理解为将以MARKDOWN语法编写的语言转换成HTML内容
 </script>
 <style lang="scss">
 .codemirror-demo {
+  --editor-bg: #f5f5f5;
+  --editor-bg-dark: #000000;
   border: 1px #dddddd solid;
   height: 600px;
 }
