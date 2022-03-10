@@ -36,11 +36,11 @@ export default defineComponent({
   setup (props, ctx) {
     const style = computed(() => {
       return props.width ? {
-        width: '100%',
+        width: '90%',
         maxWidth: props.width
       } : {
-        width: '100%',
-        maxWidth: '400px'
+        width: '90%',
+        maxWidth: '300px'
       }
     })
     const keyupHandler = (e: KeyboardEvent) => {
@@ -70,8 +70,8 @@ export default defineComponent({
   justify-content: center;
   background-color: var(--color-dialog-bg);
   .content {
-    width: 100%;
-    max-width: 400px;
+    width: 90%;
+    max-width: 300px;
     background-color: var(--color-bg);
     box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.18);
     .title {

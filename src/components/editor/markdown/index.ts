@@ -416,6 +416,49 @@ class MarkdownEditor extends BaseEditor {
     })
   }
 
+  // toolbar events
+
+  // 标题
+  toolbarHead () {
+    const view = this.view
+    const state = view.state
+    const tr: Transaction = state.update(
+      state.changeByRange(range => {
+        const line = state.doc.lineAt(range.from)
+        const text = state.sliceDoc(line.from, line.to)
+        const regex = /^#+(\s)+/
+        const arr = text.match(regex)
+        let _text = arr ? (arr[0] || '') : ''
+        _text = _text.trim()
+        let len = _text.length
+        if (len === 6) {
+          len = 1
+        } else {
+          len ++
+        }
+        _text = text.replace(regex, '')
+        let insertion = ''
+        for(let i = 0; i < len; i++) {
+          insertion += '#'
+        }
+        insertion += ' '
+        _text = insertion + _text
+        const from = line.from
+        const to = line.to
+        return {
+          changes: {
+            from,
+            to,
+            insert: _text // 替换字符
+          },
+          range: EditorSelection.range(from + _text.length, from + _text.length) // 重置选区
+        }
+      })
+    )
+    view.dispatch(tr) // 更新界面数据
+    view.focus() // 编辑器获得焦点
+  }
+
   /**
    * 在行首插入字符
    * @param insertion string
@@ -429,7 +472,6 @@ class MarkdownEditor extends BaseEditor {
         const line = state.doc.lineAt(range.from)
         // 获取行的内容
         const text = state.sliceDoc(line.from, line.to)
-        console.log(line)
         return {
           changes: {
             from: line.from,

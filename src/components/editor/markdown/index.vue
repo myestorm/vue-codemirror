@@ -1,5 +1,5 @@
 <template>
-  <div class="totonoo-markdown-editor" :class="[isFullscreen ? 'editor-fullscreen' : '']" ref="rootBox">
+  <div class="totonoo-markdown-editor" :class="[isFullscreen ? 'editor-fullscreen' : '', isMobile ? 'has-toolbar' : '']" ref="rootBox">
     <div :id="id" class="content"></div>
     <editor-dialog v-model="uploadVisible" title="媒体资源">
       <editor-upload @done="uploadDone"></editor-upload>
@@ -11,7 +11,7 @@
       <editor-preview :root="rootBox" v-model="modelValue"></editor-preview>
     </editor-dialog>
     <editor-helper v-model="myTheme" :helper="helper" @themeChange="themeChange"></editor-helper>
-    <editor-toolbar @btnClick="btnClickHandler"></editor-toolbar>
+    <editor-toolbar @toolbarClick="toolbarClickHandler" v-show="isMobile"></editor-toolbar>
   </div>
 </template>
 <script lang="ts">
@@ -65,6 +65,7 @@ export default defineComponent({
   },
   emits: ['ready', 'update:modelValue', 'change', 'focus', 'blur', 'selectionChange', 'hotKey'],
   setup (props, ctx) {
+    const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent)
     const prefix = 'totonoo-markdown-editor-'
     const id = uuidv4()
     const rootBox = ref()
@@ -163,10 +164,13 @@ export default defineComponent({
       }
     })
 
-    const btnClickHandler = (data: ToolbarItemType) => {
+    const toolbarClickHandler = (data: ToolbarItemType) => {
+      console.log(124)
       const { type } = data
       switch (type) {
         case ToolbarClickTypes.head : {
+          console.log(10)
+          editor.toolbarHead()
           break
         }
         case ToolbarClickTypes.table : {
@@ -239,6 +243,7 @@ export default defineComponent({
     })
     return {
       id: prefix + id,
+      isMobile,
       rootBox,
       uploadVisible,
       uploadDone,
@@ -249,19 +254,20 @@ export default defineComponent({
       isFullscreen,
       myTheme,
       themeChange,
-      btnClickHandler
+      toolbarClickHandler
     }
   },
 })
 </script>
 <style lang="scss" scoped>
 .totonoo-markdown-editor {
-  --color-bg: #ffffff;
+  --color-bg: var(--editor-bg, '#ffffff');
   --color-text: #666666;
   --color-text-1: #999999;
   --color-border: #eee;
   --color-dialog-bg: rgba(255, 255, 255, 0.6);
   --border-radius: 2px;
+  --color-shadow: 0 0 2px 0 rgba(0,0,0,0.16);
 
   --input-text-color: rgba(0, 0, 0, 0.9);
   --input-text-bg: rgba(0, 0, 0, 0.06);
@@ -270,11 +276,12 @@ export default defineComponent({
   --scroll-bar-color: #888888;
   --scroll-track-color: #dddddd;
   &.dark {
-    --color-bg: #2a2a2b;
+    --color-bg: var(--editor-bg-dark, '#2a2a2b');
     --color-text: #d4d4d4;
     --color-text-1: #999999;
     --color-border: rgb(19, 19, 19);
     --color-dialog-bg: rgba(0, 0, 0, 0.6);
+    --color-shadow: 0 0 2px 0 rgba(255,255,255,0.16);
 
     --input-text-color: rgba(255, 255, 255, 0.9);
     --input-text-bg: rgba(255, 255, 255, 0.08);
@@ -287,6 +294,11 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   position: relative;
+
+  &.has-toolbar {
+    padding-right: 32px;
+    box-sizing: border-box;
+  }
 
   ::-webkit-scrollbar {
     width: 8px;
