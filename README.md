@@ -57,12 +57,19 @@ export default defineComponent({
 - blur (value: string, update: ViewUpdate) => {}
 - selectionChange (value: Line, update: ViewUpdate) => {}
 - hotKey (value: MDHotKeyValueType) => {}
+- toolbarClick (value: MDToolbarClickValueType) => {}
 
 ```typescript
 interface MDHotKeyValueType<T> {
   type: HotKeyTypes,
   value: T,
   view: EditorView
+}
+
+interface MDToolbarClickValueType {
+  type: ToolbarClickTypes,
+  value: string,
+  view: MarkdownEditor
 }
 ```
 
@@ -88,7 +95,7 @@ interface MDHotKeyValueType<T> {
 |  Ctrl-Alt-q   |  引用   |
 |  Shift-Alt-o   |  有序列表   |
 |  Shift-Alt-u   |  无序列表   |
-|  Shift-Alt-t   |  TODO列表   |
+|  Shift-Alt-t   |  任务列表   |
 |  Shift-Alt-i   |  内联代码   |
 |  Shift-Alt-b   |  块级代码   |
 |  Shift-Alt-l   |  链接   |
