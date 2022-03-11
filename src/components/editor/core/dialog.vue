@@ -132,6 +132,7 @@ export default defineComponent({
     display: none;
   }
   input[type=text], input[type=number] {
+    width: 100%;
     height: 32px;
     padding: 0 8px;
     transition: all 300ms ease;

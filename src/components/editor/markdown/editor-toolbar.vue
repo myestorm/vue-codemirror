@@ -3,7 +3,7 @@
     <div class="top"></div>
     <div class="center">
       <ul class="list">
-        <li v-for="(item, key) in events" :key="key">
+        <li v-for="(item, key) in events[1]" :key="key">
           <button @click="btnClickHandler(item)">
             <component :is="item.icon" :style="{
               width: item.width || '16px',
@@ -24,13 +24,14 @@
     </div>
     <div class="bottom">
       <ul class="list">
-        <li>
-          <button>
-            <IconSave :style="{
-              width: '16px',
-              height: '16px'
+        <li v-for="(item, key) in events[2]" :key="key">
+          <button @click="btnClickHandler(item)">
+            <component :is="item.icon" :style="{
+              width: item.width || '16px',
+              height: item.height || '16px'
             }" />
           </button>
+          <span class="tips" v-if="item.title"> {{ item.title }} </span>
         </li>
       </ul>
     </div>
@@ -56,11 +57,6 @@ import IconQuote from '../theme/icon/quote.svg?component'
 import IconSave from '../theme/icon/save.svg?component'
 import IconMore from '../theme/icon/more.svg?component'
 
-const defHelper = {
-  theme: true,
-  hotkey: true
-}
-
 export enum ToolbarClickTypes {
   head = 'Head',
   table = 'Table',
@@ -75,7 +71,8 @@ export enum ToolbarClickTypes {
   preview = 'Preview',
   blockcode = 'Blockcode',
   inlinecode = 'Inlinecode',
-  quote = 'Quote'
+  quote = 'Quote',
+  save = 'Save',
 }
 
 export interface ToolbarItemType {
@@ -106,67 +103,75 @@ export default defineComponent({
     IconMore
   },
   setup (props, ctx) {
-    const events: ToolbarItemType[] = [{
-      type: ToolbarClickTypes.head,
-      title: '标题',
-      icon: 'IconHead',
-      width: '18px',
-      height: '18px'
-    }, {
-      type: ToolbarClickTypes.bold,
-      title: '加粗',
-      icon: 'IconBold'
-    }, {
-      type: ToolbarClickTypes.strikethrough,
-      title: '删除线',
-      icon: 'IconStrikethrough'
-    }, {
-      type: ToolbarClickTypes.italic,
-      title: '斜体',
-      icon: 'IconItalic'
-    }, {
-      type: ToolbarClickTypes.tasklist,
-      title: '任务列表',
-      icon: 'IconTasklist'
-    }, {
-      type: ToolbarClickTypes.orderlist,
-      title: '有序列表',
-      icon: 'IconOrderlist'
-    }, {
-      type: ToolbarClickTypes.unorderlist,
-      title: '无序列表',
-      icon: 'IconUnorderlist'
-    }, {
-      type: ToolbarClickTypes.link,
-      title: '链接',
-      icon: 'IconLink'
-    }, {
-      type: ToolbarClickTypes.table,
-      title: '表格',
-      icon: 'IconTable',
-      width: '16px',
-      height: '16px'
-    }, {
-      type: ToolbarClickTypes.blockcode,
-      title: '代码块',
-      icon: 'IconBlockcode'
-    }, {
-      type: ToolbarClickTypes.inlinecode,
-      title: '行内代码',
-      icon: 'IconInlinecode'
-    }, {
-      type: ToolbarClickTypes.quote,
-      title: '引用',
-      icon: 'IconQuote'
-    }, {
-      type: ToolbarClickTypes.media,
-      title: '媒体',
-      icon: 'IconMedia'
-    }, {
-      type: ToolbarClickTypes.preview,
-      title: '预览',
-      icon: 'IconPreview'
-    }]
+    const events: ToolbarItemType[][] = [
+        [],
+        [{
+        type: ToolbarClickTypes.head,
+        title: '标题',
+        icon: 'IconHead',
+        width: '18px',
+        height: '18px'
+      }, {
+        type: ToolbarClickTypes.bold,
+        title: '加粗',
+        icon: 'IconBold'
+      }, {
+        type: ToolbarClickTypes.strikethrough,
+        title: '删除线',
+        icon: 'IconStrikethrough'
+      }, {
+        type: ToolbarClickTypes.italic,
+        title: '斜体',
+        icon: 'IconItalic'
+      }, {
+        type: ToolbarClickTypes.tasklist,
+        title: '任务列表',
+        icon: 'IconTasklist'
+      }, {
+        type: ToolbarClickTypes.orderlist,
+        title: '有序列表',
+        icon: 'IconOrderlist'
+      }, {
+        type: ToolbarClickTypes.unorderlist,
+        title: '无序列表',
+        icon: 'IconUnorderlist'
+      }, {
+        type: ToolbarClickTypes.link,
+        title: '链接',
+        icon: 'IconLink'
+      }, {
+        type: ToolbarClickTypes.table,
+        title: '表格',
+        icon: 'IconTable',
+        width: '16px',
+        height: '16px'
+      }, {
+        type: ToolbarClickTypes.blockcode,
+        title: '代码块',
+        icon: 'IconBlockcode'
+      }, {
+        type: ToolbarClickTypes.inlinecode,
+        title: '行内代码',
+        icon: 'IconInlinecode'
+      }, {
+        type: ToolbarClickTypes.quote,
+        title: '引用',
+        icon: 'IconQuote'
+      }, {
+        type: ToolbarClickTypes.media,
+        title: '媒体',
+        icon: 'IconMedia'
+      }, {
+        type: ToolbarClickTypes.preview,
+        title: '预览',
+        icon: 'IconPreview'
+      }],
+      [{
+        type: ToolbarClickTypes.save,
+        title: '保存',
+        icon: 'IconSave'
+      }]
+    ]
     return {
       events,
       btnClickHandler (data: ToolbarItemType) {

@@ -1,13 +1,13 @@
 <template>
   <button @click="addClass">{{ btn }}模式</button>
   <div class="codemirror-demo">
-    <MarkdownEditor v-model="value" :helper="{ theme: false, hotkey: false }" @hotKey="hotKeyHandler" @change="changeHandler" />
+    <MarkdownEditor v-model="value" :helper="{ theme: false, hotkey: false }" @hotKey="hotKeyHandler" @toolbarClick="toolbarClickHandler" @change="changeHandler" />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 
-import MarkdownEditor, { MDHotKeyValueType } from './components/editor/markdown/index.vue'
+import MarkdownEditor, { MDHotKeyValueType, MDToolbarClickValueType } from './components/editor/markdown/index.vue'
 
 export default defineComponent({
   components: {
@@ -41,8 +41,12 @@ Markdown也可以理解为将以MARKDOWN语法编写的语言转换成HTML内容
         console.log(1000)
       }
     },
+    toolbarClickHandler (val: MDToolbarClickValueType) {
+      const { type } = val
+      console.log(type)
+    },
     changeHandler (val: string) {
-      console.log(value)
+      // console.log(value)
     },
     addClass () {
       const attr = 'theme'

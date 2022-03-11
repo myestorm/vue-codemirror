@@ -39,6 +39,12 @@ export interface MDHotKeyValueType<T> {
   view: EditorView
 }
 
+export interface MDToolbarClickValueType {
+  type: ToolbarClickTypes,
+  value: string,
+  view: MarkdownEditor
+}
+
 export default defineComponent({
   name: 'MarkdownEditor',
   props: {
@@ -63,7 +69,7 @@ export default defineComponent({
     EditorHelper,
     EditorToolbar
   },
-  emits: ['ready', 'update:modelValue', 'change', 'focus', 'blur', 'selectionChange', 'hotKey'],
+  emits: ['ready', 'update:modelValue', 'change', 'focus', 'blur', 'selectionChange', 'hotKey', 'toolbarClick'],
   setup (props, ctx) {
     const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent)
     const prefix = 'totonoo-markdown-editor-'
@@ -165,22 +171,74 @@ export default defineComponent({
     })
 
     const toolbarClickHandler = (data: ToolbarItemType) => {
-      console.log(124)
       const { type } = data
       switch (type) {
         case ToolbarClickTypes.head : {
-          console.log(10)
           editor.toolbarHead()
+          break
+        }
+        case ToolbarClickTypes.bold : {
+          editor.toolbarBold()
+          break
+        }
+        case ToolbarClickTypes.strikethrough : {
+          editor.toolbarStrikethrough()
+          break
+        }
+        case ToolbarClickTypes.italic : {
+          editor.toolbarItalic()
+          break
+        }
+        case ToolbarClickTypes.tasklist : {
+          editor.toolbarTasklist()
+          break
+        }
+        case ToolbarClickTypes.orderlist : {
+          editor.toolbarOrderlist()
+          break
+        }
+        case ToolbarClickTypes.unorderlist : {
+          editor.toolbarUnorderlist()
+          break
+        }
+        case ToolbarClickTypes.link : {
+          editor.toolbarLink()
           break
         }
         case ToolbarClickTypes.table : {
           tableVisible.value = true
           break
         }
+        case ToolbarClickTypes.blockcode : {
+          editor.toolbarBlockcode()
+          break
+        }
+        case ToolbarClickTypes.inlinecode : {
+          editor.toolbarInlinecode()
+          break
+        }
+        case ToolbarClickTypes.quote : {
+          editor.toolbarQuote()
+          break
+        }
+        case ToolbarClickTypes.media : {
+          uploadVisible.value = true
+          break
+        }
+        case ToolbarClickTypes.preview : {
+          previewVisible.value = true
+          break
+        }
         default: {
           break
         }
       }
+      
+      ctx.emit('toolbarClick', {
+        type,
+        value: editor.getValue(),
+        editor
+      })
     }
 
     onMounted(() => {

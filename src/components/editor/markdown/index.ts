@@ -459,6 +459,57 @@ class MarkdownEditor extends BaseEditor {
     view.focus() // 编辑器获得焦点
   }
 
+  // 加粗
+  toolbarBold () {
+    this.toggleAroundSelection('**', '**')
+  }
+
+  // 删除线
+  toolbarStrikethrough () {
+    this.toggleAroundSelection('~~', '~~')
+  }
+
+  // 斜体
+  toolbarItalic () {
+    this.toggleAroundSelection('*', '*')
+  }
+
+  // 任务列表
+  toolbarTasklist () {
+    this.insertStartPerLine('- [ ] ')
+  }
+
+  // 有序列表
+  toolbarOrderlist () {
+    this.insertStartPerLine('{num}. ')
+  }
+
+  // 无序列表
+  toolbarUnorderlist () {
+    this.insertStartPerLine('- ')
+  }
+
+  // 链接
+  toolbarLink () {
+    this.insertLink()
+  }
+
+  // 代码块
+  toolbarBlockcode () {
+    this.insertLineAfterCursor('```\n```')
+    this.setCursor(-4, -4)
+  }
+
+  // 行内代码
+  toolbarInlinecode () {
+    this.toggleAroundSelection('`', '`')
+  }
+
+  // 引用
+  toolbarQuote () {
+    this.insertStartPerLine('> ')
+  }
+
   /**
    * 在行首插入字符
    * @param insertion string
@@ -760,7 +811,7 @@ class MarkdownEditor extends BaseEditor {
    * @param url string 链接地址
    * @param title string 链接描述
    */
-   insertLink (url: string = '', title: string = '') {
+   insertLink (url: string = '', title: string = '标题') {
     const { view } = this
     const state = view.state
     const tr: Transaction = state.update(
@@ -771,13 +822,15 @@ class MarkdownEditor extends BaseEditor {
         const _url = url || 'https://'
 
         const insertion = `[${text}](${_url} "${text}")`
-        const offset = range.from + text.length + _url.length + 3
+        const from = range.from + text.length + 3
+        const to = from + _url.length
+        // const offset = range.from + text.length + _url.length + 1
         return {changes: {
             from: range.from,
             to: range.to,
             insert: insertion
           },
-          range: EditorSelection.range(offset, offset)
+          range: EditorSelection.range(from, to)
         }
       })
     )
