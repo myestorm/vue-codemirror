@@ -8,6 +8,9 @@
 import { defineComponent, ref } from 'vue'
 
 import MarkdownEditor, { MDHotKeyValueType, MDToolbarClickValueType } from './components/editor/markdown/index.vue'
+// import '../dist/style.css'
+// import { MarkdownEditor } from '../dist/vue-codemirror.es.js'
+// import { MDHotKeyValueType, MDToolbarClickValueType } from '../dist_types/components/editor/markdown/index.vue'
 
 export default defineComponent({
   components: {
