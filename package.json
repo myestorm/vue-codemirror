@@ -1,9 +1,9 @@
 {
   "name": "@totonoo/vue-codemirror",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "main": "./dist/vue-codemirror.umd.js",
   "module": "./dist/vue-codemirror.es.js",
-  "typings": "./dist_types/main.d.ts",
+  "typings": "./dist_types/build.d.ts",
   "files": [
     "dist/*",
     "dist_types/*"
