@@ -1,5 +1,3 @@
-import MarkdownEditor from './components/editor/markdown/index.vue'
+import _MarkdownEditor from './components/editor/markdown/index.vue'
 
-export {
-  MarkdownEditor
-}
+export const MarkdownEditor = _MarkdownEditor
