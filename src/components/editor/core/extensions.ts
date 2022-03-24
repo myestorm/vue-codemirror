@@ -18,8 +18,7 @@ const _lineNumbers = lineNumbers() // 显示行号
 export interface EditorConfigType {
   lineWrapping?: Boolean,
   lineNumbers?: Boolean,
-  allowMultipleSelections?: Boolean,
-  theme?: string
+  allowMultipleSelections?: Boolean
 }
 
 export default function (options: EditorConfigType): Extension[] {
@@ -58,6 +57,5 @@ export default function (options: EditorConfigType): Extension[] {
       return span
     }
   }))
-
   return extensions
 }

@@ -1,106 +1,144 @@
-import { Line } from '@codemirror/text'
-import { EditorView, ViewUpdate, KeyBinding } from '@codemirror/view'
-import { EditorState, Extension, Compartment, EditorSelection, Transaction } from '@codemirror/state'
-import { historyKeymap } from '@codemirror/history'
-import { foldKeymap } from '@codemirror/fold'
-import { defaultKeymap, indentWithTab } from '@codemirror/commands'
-import { closeBracketsKeymap } from '@codemirror/closebrackets'
-import { completionKeymap } from '@codemirror/autocomplete'
-import { searchKeymap } from '@codemirror/search'
-import { commentKeymap } from '@codemirror/comment'
-import { lintKeymap } from '@codemirror/lint'
+import { v4 as uuidv4 } from 'uuid'
 
-import prettier from 'prettier/standalone'
+import { EditorState, Extension, Compartment, EditorSelection, Transaction } from '@codemirror/state'
+import { EditorView, ViewUpdate, KeyBinding } from '@codemirror/view'
 
 import { Dark } from '../theme/dark'
 import { Light } from '../theme/light'
-import extensions, { EditorConfigType } from '../extensions/index'
+import getCommExtensions, { EditorConfigType } from './extensions'
+
+export enum ThemeType {
+  DARK = 'dark',
+  LIGHT = 'light'
+}
+
+export enum EventType {
+  FOCUS = 'focus',
+  BLUR = 'blur',
+  CHANGE = 'change',
+  SELECTCHANGE = 'selectionChange',
+  THEMECHANGE = 'themeChange'
+}
+
+export type EventFunctionType = (value: string, editor: BaseEditor) => void
+
+export interface BaseOptionsType {
+  initValue?: string,
+  editorConfig?: EditorConfigType,
+  theme?: {
+    def?: ThemeType,
+    observer?: string | false,
+    observerAttr?: string
+  }
+}
+
+const defaultOptions: BaseOptionsType = {
+  initValue: 'asdasd',
+  editorConfig: {
+    lineWrapping: true,
+    lineNumbers: true,
+    allowMultipleSelections: true
+  },
+  theme: {
+    def: ThemeType.LIGHT,
+    observer: 'body',
+    observerAttr: 'theme'
+  }
+}
 
 class BaseEditor {
-  box!: Element
+  parent!: Element
   state!: EditorState
   view!: EditorView
-  theme = new Compartment()
-  isDark = true
-  themeDark = Dark
-  themeLight = Light
   extensions: Extension[] = []
-  events = {
-    focus: (update: ViewUpdate, value: string) :void => {},
-    blur: (update: ViewUpdate, value: string) :void => {},
-    change: (update: ViewUpdate, value: string) :void => {},
-    selectionChange: (update: ViewUpdate, line: Line) :void => {}
+  themeStatus = new Compartment()
+  theme: ThemeType = ThemeType.LIGHT
+
+  options!: BaseOptionsType
+
+  events!: {
+    [K in EventType[number]]: EventFunctionType
   }
-  hotKeyMaps: KeyBinding[] = []
 
-  prettier = prettier
+  constructor (options?: BaseOptionsType) {
+    const opts = Object.assign({}, defaultOptions, options || {})
+    this.options = opts
+  }
 
-  constructor (options?: EditorConfigType) {
-    const defaultOptions: EditorConfigType = {
-      lineWrapping: true,
-      lineNumbers: true,
-      allowMultipleSelections: true,
-      theme: 'light'
-    }
-    const opts = Object.assign({}, defaultOptions, options)
-    this.extensions = extensions(opts)
+  create (parentExp: string, extensions: Extension[] = []) {
+    const parent = this.$$(parentExp)
+    if (parent) {
+      this.parent = parent
 
-    // 默认白天黑夜模式
-    if (opts.theme === 'dark') {
-      this.extensions.push(this.theme.of(this.themeDark))
-      this.isDark = true
-    } else {
-      this.extensions.push(this.theme.of(this.themeLight))
-      this.isDark = false
-    }
+      const opts = this.options
 
-    // 快捷键
-    this.hotKeyMaps = [
-      indentWithTab,
-      ...closeBracketsKeymap,
-      ...defaultKeymap,
-      ...searchKeymap,
-      ...historyKeymap,
-      ...foldKeymap,
-      ...commentKeymap,
-      ...completionKeymap,
-      ...lintKeymap,
-    ]
+      // 获取通用插件
+      const commExtensions = getCommExtensions(opts?.editorConfig || {})
+      extensions = extensions.concat(commExtensions)
 
-    // 事件
-    const updateListener = EditorView.updateListener.of((update) => {
-      const value = update.state.doc.toString()
-      if (update.docChanged) {
-        this.events.change(update, value)
+      // 加入明暗切换
+      const themeDef = opts?.theme?.def || ThemeType.LIGHT
+      if (themeDef === ThemeType.DARK) {
+        extensions.push(this.themeStatus.of(Dark))
+        this.theme = ThemeType.DARK
+      } else {
+        extensions.push(this.themeStatus.of(Light))
+        this.theme = ThemeType.LIGHT
       }
-      if (update.selectionSet) { // 选区变化
-        this.selectionSet(update)
+
+      // 监听属性变化同步明暗状态
+      if (opts.theme?.observer !== false) {
+        const _epx = opts.theme?.observer || ''
+        const _attr = opts.theme?.observerAttr || ''
+        if (_epx && _attr) {
+          const body = this.$$(_epx)
+          if (body) {
+            const observer = new MutationObserver((mutationsList, observer) => {
+              for(let mutation of mutationsList) {
+                if (mutation.type === 'attributes') {
+                  const target = mutation.target as HTMLElement
+                  const val = target.getAttribute(_attr) || ''
+                  this.changThemeHandler(val === ThemeType.DARK ? ThemeType.DARK : ThemeType.LIGHT)
+                }
+              }
+            })
+            observer.observe(body, { subtree: false, childList: false, attributes: true })
+          }
+        }
+        
       }
-  
-      if (update.focusChanged) { // 焦点变化
-        this.focusChanged(update, value)
-      }
+
+      this.state = EditorState.create({
+        doc: this.options.initValue,
+        extensions: extensions
+      })
+      this.view = new EditorView({
+        state: this.state,
+        parent
+      })
+    }    
+  }
+
+  changThemeHandler (theme: ThemeType) {
+    const _theme = theme === ThemeType.DARK ? Dark : Light
+    this.view.dispatch({
+      effects: this.themeStatus.reconfigure(_theme)
     })
 
-    this.extensions.push(updateListener)
-  }
-  
-  $$ (exp: string): Element | null {
-    return document.querySelector(exp)
-  }
-
-  focusChanged (update: ViewUpdate, value: string) {
-    if(!update.view.hasFocus) {
-      this.events.blur(update, value)
-    } else {
-      this.events.focus(update, value)
+    const _parent = this.parent.parentElement
+    if (_parent) {
+      if (theme === ThemeType.DARK) {
+        _parent.classList.add(ThemeType.DARK)
+      } else {
+        _parent.classList.remove(ThemeType.DARK)
+      }
     }
-  }
 
-  selectionSet (update: ViewUpdate) {
-    const range = update.state.selection.ranges[0]
-    const line = update.state.doc.lineAt(range.from)
-    this.events.selectionChange(update, line)
+    if (this.events[EventType.THEMECHANGE]) {
+      const val = this.getValue()
+      const editor = this
+      this.events[EventType.THEMECHANGE](val, editor)
+    }
   }
 
   getValue (): string {
@@ -109,7 +147,7 @@ class BaseEditor {
   }
 
   setValue (val: string = '') {
-    const { view } = this
+    const view = this.view
     const state = view.state
     const transaction = state.update({
       changes: {
@@ -121,39 +159,17 @@ class BaseEditor {
     view.dispatch(transaction)
   }
 
-  /**
-   * 设置光标位置，以当前光标为基准，设置便宜量
-   * @param offsetFrom number 开始点偏移量
-   * @param offsetTo number 结束点偏移量
-   */
-   setCursor (offsetFrom: number, offsetTo: number) {
-    const { view } = this
-    if (view) {
-      const state = view.state
-      const tr: Transaction = state.update(
-        state.changeByRange(range => {
-          return {
-            range: EditorSelection.range(range.from + offsetFrom, range.to + offsetTo)
-          }
-        })
-      )
-      view.dispatch(tr)
-      view.focus()
-    }
+  setEvent (type: EventType, handler: EventFunctionType) {
+    this.events[type] = handler
   }
 
-  regExpcharacterEscape (str: string) {
-    str = str.replace(/\{/gmi, '\\{')
-    str = str.replace(/\}/gmi, '\\}')
-    str = str.replace(/\(/gmi, '\\(')
-    str = str.replace(/\)/gmi, '\\)')
-    str = str.replace(/\//gmi, '\\/')
-    str = str.replace(/\$/gmi, '\\$')
-    str = str.replace(/\#/gmi, '\\#')
-    str = str.replace(/\&/gmi, '\\&')
-    str = str.replace(/\*/gmi, '\\*')
-    str = str.replace(/\./gmi, '\\.')
-    return str
+  $$ (exp: string): Element | null {
+    return document.querySelector(exp)
+  }
+
+  uuid (): string {
+    const id = uuidv4()
+    return id
   }
 }
 
