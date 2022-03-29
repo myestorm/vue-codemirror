@@ -1,4 +1,5 @@
 import { FunctionalComponent, SVGAttributes } from 'vue'
+import MarkdownEditor, { MarkdownThemeType } from './index'
 
 import IconHead from '../theme/markdown/head.svg?component'
 import IconTable from '../theme/markdown/table.svg?component'
@@ -52,95 +53,183 @@ export interface ToolbarsType {
   bottom: ToolbarItemType[],
 }
 
-export default function createToolbar<T> (editor: T): ToolbarsType  {
+export default function createToolbar (editor: MarkdownEditor): ToolbarsType  {
   const Head: ToolbarItemType = {
     type: ToolbarItemTypes.head,
     title: '标题',
     icon: IconHead,
+    shortcutKey: 'Ctrl-Alt-h',
     action: () => {
-      console.log(123, editor)
+      editor.headAction()
     }
   }
   const Table: ToolbarItemType = {
     type: ToolbarItemTypes.table,
     title: '表格',
-    icon: IconTable
+    icon: IconTable,
+    shortcutKey: 'Ctrl-Alt-t',
+    action: () => {
+    }
   }
   const Media: ToolbarItemType = {
     type: ToolbarItemTypes.media,
     title: '媒体',
-    icon: IconMedia
-  }
-  const Bold: ToolbarItemType = {
-    type: ToolbarItemTypes.bold,
-    title: '加粗',
-    icon: IconBold
-  }
-  const Strikethrough: ToolbarItemType = {
-    type: ToolbarItemTypes.strikethrough,
-    title: '删除线',
-    icon: IconStrikethrough
-  }
-  const Italic: ToolbarItemType = {
-    type: ToolbarItemTypes.italic,
-    title: '斜体',
-    icon: IconItalic
-  }
-  const Tasklist: ToolbarItemType = {
-    type: ToolbarItemTypes.tasklist,
-    title: '任务列表',
-    icon: IconTasklist
-  }
-  const Orderlist: ToolbarItemType = {
-    type: ToolbarItemTypes.orderlist,
-    title: '有序列表',
-    icon: IconOrderlist
-  }
-  const Unorderlist: ToolbarItemType = {
-    type: ToolbarItemTypes.unorderlist,
-    title: '无序列表',
-    icon: IconUnorderlist
+    icon: IconMedia,
+    shortcutKey: 'Ctrl-Alt-m',
+    action: () => {
+      editor.headAction()
+    }
   }
   const Link: ToolbarItemType = {
     type: ToolbarItemTypes.link,
     title: '链接',
-    icon: IconLink
+    icon: IconLink,
+    shortcutKey: 'Shift-Alt-l',
+    action: () => {
+      editor.linkAction()
+    }
   }
   const Preview: ToolbarItemType = {
     type: ToolbarItemTypes.preview,
     title: '预览',
-    icon: IconPreview
+    icon: IconPreview,
+    shortcutKey: 'Ctrl-Alt-p',
+    action: () => {
+      editor.headAction()
+    }
+  }
+  const Bold: ToolbarItemType = {
+    type: ToolbarItemTypes.bold,
+    title: '加粗',
+    icon: IconBold,
+    shortcutKey: 'Ctrl-Alt-b',
+    action: () => {
+      editor.boldAction()
+    }
+  }
+  const Strikethrough: ToolbarItemType = {
+    type: ToolbarItemTypes.strikethrough,
+    title: '删除线',
+    icon: IconStrikethrough,
+    shortcutKey: 'Ctrl-Alt-l',
+    action: () => {
+      editor.strikethroughAction()
+    }
+  }
+  const Italic: ToolbarItemType = {
+    type: ToolbarItemTypes.italic,
+    title: '斜体',
+    icon: IconItalic,
+    shortcutKey: 'Ctrl-Alt-i',
+    action: () => {
+      editor.italicAction()
+    }
+  }
+  const Tasklist: ToolbarItemType = {
+    type: ToolbarItemTypes.tasklist,
+    title: '任务列表',
+    icon: IconTasklist,
+    shortcutKey: 'Shift-Alt-t',
+    action: () => {
+      editor.tasklistAction()
+    }
+  }
+  const Orderlist: ToolbarItemType = {
+    type: ToolbarItemTypes.orderlist,
+    title: '有序列表',
+    icon: IconOrderlist,
+    shortcutKey: 'Shift-Alt-o',
+    action: () => {
+      editor.orderlistAction()
+    }
+  }
+  const Unorderlist: ToolbarItemType = {
+    type: ToolbarItemTypes.unorderlist,
+    title: '无序列表',
+    icon: IconUnorderlist,
+    shortcutKey: 'Shift-Alt-u',
+    action: () => {
+      editor.unorderlistAction()
+    }
   }
   const Blockcode: ToolbarItemType = {
     type: ToolbarItemTypes.blockcode,
     title: '代码块',
-    icon: IconBlockcode
+    icon: IconBlockcode,
+    shortcutKey: 'Shift-Alt-b',
+    action: () => {
+      editor.blockcodeAction()
+    }
   }
   const Inlinecode: ToolbarItemType = {
     type: ToolbarItemTypes.inlinecode,
     title: '行间代码',
-    icon: IconInlinecode
+    icon: IconInlinecode,
+    shortcutKey: 'Shift-Alt-i',
+    action: () => {
+      editor.inlinecodeAction()
+    }
   }
   const Quote: ToolbarItemType = {
     type: ToolbarItemTypes.quote,
     title: '引用',
-    icon: IconQuote
+    icon: IconQuote,
+    shortcutKey: 'Ctrl-Alt-q',
+    action: () => {
+      editor.quoteAction()
+    }
   }
   const Sun: ToolbarItemType = {
     type: ToolbarItemTypes.sun,
     title: '明暗',
-    icon: IconSun
+    icon: IconSun,
+    shortcutKey: 'Alt-l',
+    action: () => {
+      const _change = () => {
+        const _theme = editor.theme === MarkdownThemeType.DARK ? MarkdownThemeType.LIGHT : MarkdownThemeType.DARK
+        editor.changThemeHandler(_theme)
+        editor.theme = _theme
+      }
+      const opts = editor.options
+      if (opts.theme?.observer !== false) {
+        const _epx = opts.theme?.observer || ''
+        const _attr = opts.theme?.observerAttr || ''
+        if (_epx && _attr) {
+          const body = editor.$$(_epx)
+          if (body) {
+            const val = editor.theme
+            if (val === MarkdownThemeType.DARK) {
+              body.removeAttribute(_attr)
+            } else {
+              body.setAttribute(_attr, MarkdownThemeType.DARK)
+            }
+          } else {
+            _change()
+          }
+        } else {
+          _change()
+        }
+      } else {
+        _change()
+      }
+    }
   }
   const Helper: ToolbarItemType = {
     type: ToolbarItemTypes.helper,
     title: '快捷键',
-    icon: IconKeyboard
+    icon: IconKeyboard,
+    shortcutKey: 'Alt-k',
+    action: () => {
+      editor.headAction()
+    }
   }
   const Save: ToolbarItemType = {
     type: ToolbarItemTypes.save,
     title: '保存',
+    icon: IconSave,
     shortcutKey: 'Ctrl-s',
-    icon: IconSave
+    action: () => {
+    }
   }
   return {
     top: [],

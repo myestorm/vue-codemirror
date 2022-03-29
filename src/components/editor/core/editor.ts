@@ -56,9 +56,9 @@ class BaseEditor {
 
   options!: BaseOptionsType
 
-  events!: {
+  events: {
     [K in EventType[number]]: EventFunctionType
-  }
+  } = {}
 
   constructor (options?: BaseOptionsType) {
     const opts = Object.assign({}, defaultOptions, options || {})
@@ -161,6 +161,41 @@ class BaseEditor {
 
   setEvent (type: EventType, handler: EventFunctionType) {
     this.events[type] = handler
+  }
+
+  /**
+   * 设置光标位置，以当前光标为基准，设置便宜量
+   * @param offsetFrom number 开始点偏移量
+   * @param offsetTo number 结束点偏移量
+   */
+   setCursor (offsetFrom: number, offsetTo: number) {
+    const { view } = this
+    if (view) {
+      const state = view.state
+      const tr: Transaction = state.update(
+        state.changeByRange(range => {
+          return {
+            range: EditorSelection.range(range.from + offsetFrom, range.to + offsetTo)
+          }
+        })
+      )
+      view.dispatch(tr)
+      view.focus()
+    }
+  }
+
+  regExpcharacterEscape (str: string) {
+    str = str.replace(/\{/gmi, '\\{')
+    str = str.replace(/\}/gmi, '\\}')
+    str = str.replace(/\(/gmi, '\\(')
+    str = str.replace(/\)/gmi, '\\)')
+    str = str.replace(/\//gmi, '\\/')
+    str = str.replace(/\$/gmi, '\\$')
+    str = str.replace(/\#/gmi, '\\#')
+    str = str.replace(/\&/gmi, '\\&')
+    str = str.replace(/\*/gmi, '\\*')
+    str = str.replace(/\./gmi, '\\.')
+    return str
   }
 
   $$ (exp: string): Element | null {
