@@ -33,6 +33,8 @@ export const totonooDarkTheme = EditorView.theme({
     height: '100%'
   },
 
+  '&.cm-focused': { outline: 'none !important' },
+
   ".cm-content": {
     caretColor: cursor,
     fontFamily,

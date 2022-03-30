@@ -82,6 +82,9 @@ class MarkdownEditor extends BaseEditor {
             if (typeof item.action === 'function') {
               item.action()
             }
+            if (typeof item.end === 'function') {
+              item.end(item, 'keyboard')
+            }
             return false
           }
         }

@@ -1,18 +1,20 @@
 <template>
   <div class="editor-dialog" :style="style" v-if="modelValue">
-    <div class="content" :style="contentStyle">
+    <div class="content" :style="contentStyle" :id="id">
       <div class="title">
         <span>{{ header.title }}</span>
         <button @click="$emit('update:modelValue', !modelValue)" class="btn-close">
           <IconRemove />
         </button>
       </div>
-      <slot></slot>
+      <div class="main" :style="{ height: height }">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, computed } from 'vue'
+import { defineComponent, onMounted, onUpdated, ref, nextTick } from 'vue'
 import IconRemove from './icon/remove.svg?component'
 
 export default defineComponent({
@@ -30,11 +32,9 @@ export default defineComponent({
         return { title: '' }
       }
     },
-    content: {
-      type: Object,
-      default: () => {
-        return { title: '' }
-      }
+    contentMaxWidth: {
+      type: String,
+      default: '320px'
     },
     fullScreen: {
       type: Boolean,
@@ -50,23 +50,15 @@ export default defineComponent({
     }
   },
   setup (props, ctx) {
-    // const style = computed(() => {
-    //   return props.width ? {
-    //     width: '90%',
-    //     maxWidth: props.width
-    //   } : {
-    //     width: '90%',
-    //     maxWidth: '300px'
-    //   }
-    // })
+    const id = `editor-dialog-content-${new Date().getTime()}`
     const style = {
       position: 'absolute',
       zIndex: props.zIndex
     }
     const contentStyle = {
       width: props.fullScreen ? '100%' : '90%',
-      height: props.fullScreen ? '100%' : 'auto',
-      maxWidth: props.fullScreen ? '100%' : '320px'
+      maxWidth: props.fullScreen ? '100%' : props.contentMaxWidth,
+      maxHeight: props.fullScreen ? '100%' : '90%'
     }
     if (props.fixed) {
       style.position = 'fixed'
@@ -77,12 +69,27 @@ export default defineComponent({
         ctx.emit('update:modelValue', false)
       }
     }
+    const height = ref('auto')
+    const getHeight = () => {
+      const h = document.querySelector(`#${id}`)?.clientHeight
+      if (h) {
+        height.value = `${h - 40}px`
+      }
+    }
+    onUpdated(() => {
+      getHeight()
+    })
     onMounted(() => {
       document.addEventListener('keyup', keyupHandler)
+      nextTick(() => {
+        getHeight()
+      })
     })
     return {
+      id,
       style,
-      contentStyle
+      contentStyle,
+      height
     }
   }
 })
@@ -101,7 +108,8 @@ export default defineComponent({
   background-color: var(--color-dialog-bg);
   .content {
     width: 90%;
-    max-width: 300px;
+    max-width: 320px;
+    max-height: 90%;
     background-color: var(--color-bg);
     box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.18);
     .title {
@@ -135,6 +143,9 @@ export default defineComponent({
           height: 50%;
         }
       }
+    }
+    .main {
+      overflow: auto;
     }
   }
 }

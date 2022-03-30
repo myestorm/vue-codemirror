@@ -1,4 +1,5 @@
 import { FunctionalComponent, SVGAttributes } from 'vue'
+import parserMarkdown from 'prettier/parser-markdown'
 import MarkdownEditor, { MarkdownThemeType } from './index'
 
 import IconHead from '../theme/markdown/head.svg?component'
@@ -18,6 +19,14 @@ import IconQuote from '../theme/markdown/quote.svg?component'
 import IconSave from '../theme/markdown/save.svg?component'
 import IconKeyboard from '../theme/markdown/keyboard.svg?component'
 import IconSun from '../theme/markdown/sun.svg?component'
+import IconFormat from '../theme/markdown/format.svg?component'
+import IconDivider from '../theme/markdown/divider.svg?component'
+import IconFullscreen from '../theme/markdown/fullscreen.svg?component'
+
+const prettierConfig = {
+  parser: 'markdown',
+  plugins: [parserMarkdown]
+}
 
 export enum ToolbarItemTypes {
   head = 'Head',
@@ -36,7 +45,10 @@ export enum ToolbarItemTypes {
   quote = 'Quote',
   save = 'Save',
   sun = 'Sun',
-  helper = 'Helper'
+  helper = 'Helper',
+  format = 'Format',
+  divider = 'Divider',
+  fullscreen = 'Fullscreen'
 }
 
 export interface ToolbarItemType {
@@ -44,7 +56,8 @@ export interface ToolbarItemType {
   title: string, 
   icon: FunctionalComponent<SVGAttributes, {}>,
   shortcutKey?: string,
-  action?: () => void
+  action?: () => void,
+  end?: (item: ToolbarItemType, type: string) => void
 }
 
 export interface ToolbarsType {
@@ -111,7 +124,7 @@ export default function createToolbar (editor: MarkdownEditor): ToolbarsType  {
     type: ToolbarItemTypes.strikethrough,
     title: '删除线',
     icon: IconStrikethrough,
-    shortcutKey: 'Ctrl-Alt-l',
+    shortcutKey: 'Ctrl-Alt-s',
     action: () => {
       editor.strikethroughAction()
     }
@@ -216,12 +229,9 @@ export default function createToolbar (editor: MarkdownEditor): ToolbarsType  {
   }
   const Helper: ToolbarItemType = {
     type: ToolbarItemTypes.helper,
-    title: '快捷键',
+    title: '帮助文档',
     icon: IconKeyboard,
-    shortcutKey: 'Alt-k',
-    action: () => {
-      editor.headAction()
-    }
+    shortcutKey: 'Alt-h'
   }
   const Save: ToolbarItemType = {
     type: ToolbarItemTypes.save,
@@ -231,23 +241,52 @@ export default function createToolbar (editor: MarkdownEditor): ToolbarsType  {
     action: () => {
     }
   }
+  const Format: ToolbarItemType = {
+    type: ToolbarItemTypes.format,
+    title: '格式美化',
+    icon: IconFormat,
+    shortcutKey: 'Ctrl-b',
+    action: () => {
+      const value = editor.getValue()
+      const _value = editor.prettier.format(value, prettierConfig)
+      editor.setValue(_value)
+    }
+  }
+  const Divider: ToolbarItemType = {
+    type: ToolbarItemTypes.divider,
+    title: '分割线',
+    icon: IconDivider,
+    shortcutKey: 'Ctrl-Alt-l',
+    action: () => {
+      editor.insertLineAfterCursor('\n---\n')
+    }
+  }
+  const Fullscreen: ToolbarItemType = {
+    type: ToolbarItemTypes.fullscreen,
+    title: '全屏',
+    icon: IconFullscreen,
+    shortcutKey: 'F11'
+  }
   return {
     top: [],
     center: [
-      Head,
-      Table,
       Media,
-      Bold,
-      Strikethrough,
-      Italic,
+      Link,
+      Table,
       Tasklist,
       Orderlist,
       Unorderlist,
-      Link,
       Blockcode,
       Inlinecode,
+      Head,
+      Bold,
+      Strikethrough,
+      Italic,
       Quote,
-      Preview
+      Divider,
+      Preview,
+      Format,
+      Fullscreen
     ],
     bottom: [
       Sun,

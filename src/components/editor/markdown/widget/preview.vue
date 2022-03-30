@@ -35,8 +35,6 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .editor-preview {
-  height: calc(100vh - 42px);
-  overflow: auto;
   &-content {
     padding: 8px 16px;
   }

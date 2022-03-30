@@ -68,7 +68,7 @@ Markdown也可以理解为将以MARKDOWN语法编写的语言转换成HTML内容
 </script>
 <style lang="scss">
 .codemirror-demo {
-  --editor-bg: #f5f5f5;
+  --editor-bg-light: #f5f5f5;
   --editor-bg-dark: #000000;
   border: 1px #dddddd solid;
   height: 600px;

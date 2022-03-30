@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
 
 import { EditorState, Extension, Compartment, EditorSelection, Transaction } from '@codemirror/state'
-import { EditorView, ViewUpdate, KeyBinding } from '@codemirror/view'
+import { Line } from '@codemirror/text'
+import { EditorView } from '@codemirror/view'
+import prettier from 'prettier/standalone'
 
 import { Dark } from '../theme/dark'
 import { Light } from '../theme/light'
@@ -20,7 +22,7 @@ export enum EventType {
   THEMECHANGE = 'themeChange'
 }
 
-export type EventFunctionType = (value: string, editor: BaseEditor) => void
+export type EventFunctionType = (value: string | Line, editor: BaseEditor) => void
 
 export interface BaseOptionsType {
   initValue?: string,
@@ -33,7 +35,7 @@ export interface BaseOptionsType {
 }
 
 const defaultOptions: BaseOptionsType = {
-  initValue: 'asdasd',
+  initValue: '',
   editorConfig: {
     lineWrapping: true,
     lineNumbers: true,
@@ -54,6 +56,8 @@ class BaseEditor {
   themeStatus = new Compartment()
   theme: ThemeType = ThemeType.LIGHT
 
+  prettier = prettier
+
   options!: BaseOptionsType
 
   events: {
@@ -66,6 +70,7 @@ class BaseEditor {
   }
 
   create (parentExp: string, extensions: Extension[] = []) {
+    const editor = this
     const parent = this.$$(parentExp)
     if (parent) {
       this.parent = parent
@@ -75,6 +80,37 @@ class BaseEditor {
       // 获取通用插件
       const commExtensions = getCommExtensions(opts?.editorConfig || {})
       extensions = extensions.concat(commExtensions)
+
+      // 事件
+      const updateListener = EditorView.updateListener.of((update) => {
+        const value = update.state.doc.toString()
+        if (update.docChanged) {
+          if (typeof this.events[EventType.CHANGE] === 'function') {
+            this.events[EventType.CHANGE](value, editor)
+          }
+        }
+        if (update.selectionSet) { // 选区变化
+          if (this.events[EventType.SELECTCHANGE]) {
+            const range = update.state.selection.ranges[0]
+            const line = update.state.doc.lineAt(range.from)
+            this.events[EventType.SELECTCHANGE](line, editor)
+          }
+        }
+    
+        if (update.focusChanged) { // 焦点变化
+          if(!update.view.hasFocus) {
+            if (this.events[EventType.BLUR]) {
+              this.events[EventType.BLUR](value, editor)
+            }
+          } else {
+            if (this.events[EventType.FOCUS]) {
+              this.events[EventType.FOCUS](value, editor)
+            }
+          }
+        }
+      })
+
+      extensions.push(updateListener)
 
       // 加入明暗切换
       const themeDef = opts?.theme?.def || ThemeType.LIGHT
