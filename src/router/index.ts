@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, Router, RouteRecordRaw } from 'vue-router'
 
 import home from '../views/home.vue'
+import toolbar from '../views/toolbar.vue'
 
 const routes: RouteRecordRaw[] = [{
   path: '/',
@@ -11,25 +12,9 @@ const routes: RouteRecordRaw[] = [{
     keepAlive: false
   }
 }, {
-  path: '/mobile',
-  name: 'Mobile',
-  component: home,
-  meta: {
-    icon: 'home',
-    keepAlive: false
-  }
-}, {
   path: '/toolbar',
   name: 'Toolbar',
-  component: home,
-  meta: {
-    icon: 'home',
-    keepAlive: false
-  }
-}, {
-  path: '/document',
-  name: 'Document',
-  component: home,
+  component: toolbar,
   meta: {
     icon: 'home',
     keepAlive: false

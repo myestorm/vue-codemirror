@@ -22,12 +22,21 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted, nextTick, computed } from 'vue'
+import { defineComponent, PropType } from 'vue'
+
+interface Props {
+  modelValue: {
+    type: string,
+    title: string,
+    win: string,
+    mac: string
+  }[];
+}
 
 export default defineComponent({
   props: {
     modelValue: {
-      type: Array,
+      type: Array as PropType<Props['modelValue']>,
       default: () => []
     }
   },
@@ -54,8 +63,8 @@ export default defineComponent({
       text-align: left;
     }
     > thead th {
-      &:first-child {
-        width: 50%;
+      &:first-child, &:nth-child(2) {
+        width: 35%;
       }
     }
     tr {

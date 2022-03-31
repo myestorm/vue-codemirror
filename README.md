@@ -2,6 +2,8 @@
 
 codemirror vue组件，支持TS，使用的是codemirror 6。支持明暗模式。
 
+> 未经测试，不建议使用于生产环境。个人测试作品。
+
 ## 准备开始
 
 ### 安装
@@ -17,11 +19,17 @@ npm install @totonoo/vue-codemirror --save
 ```vue
 <template>
   <div class="codemirror-demo">
-    <MarkdownEditor @change="change" />
+    <MarkdownEditor
+      v-model="value"
+      @blur="changeHandler"
+      @focus="changeHandler"
+      @selectionChange="consoleHandler"
+      @themeChange="consoleHandler"
+      @change="changeHandler" />
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 import '@totonoo/vue-codemirror/dist/style.css'
 import { MarkdownEditor } from '@totonoo/vue-codemirror'
@@ -31,10 +39,19 @@ export default defineComponent({
     MarkdownEditor
   },
   setup () {
+    const value = ref(`## 标题
+    文章以名为 Markdown 的轻量级标记语言编写，这种方式易于阅读且易于学习。
+    `)
+    const changeHandler = (val: string, editor: typeof MarkdownEditor) => {
+      console.log(val === value.value)
+    }
+    const consoleHandler = (val: string, editor: typeof MarkdownEditor) => {
+      console.log(val)
+    }
     return {
-      change (val: string) {
-        console.log(val)
-      }
+      value,
+      changeHandler,
+      consoleHandler
     }
   },
 })
@@ -51,72 +68,40 @@ export default defineComponent({
 
 ### Events
 
-- ready (editor: MarkdownEditor) => {}
-- change (value: string, update: ViewUpdate) => {}
-- focus (value: string, update: ViewUpdate) => {}
-- blur (value: string, update: ViewUpdate) => {}
-- selectionChange (value: Line, update: ViewUpdate) => {}
-- hotKey (value: MDHotKeyValueType) => {}
-- toolbarClick (value: MDToolbarClickValueType) => {}
+- ready (editor: typeof MarkdownEditor) => {}
+- change (value: string, editor: typeof MarkdownEditor) => {}
+- focus (value: string, editor: typeof MarkdownEditor) => {}
+- blur (value: string, editor: typeof MarkdownEditor) => {}
+- selectionChange (value: Line, editor: typeof MarkdownEditor) => {}
+- toolbarItemAction (item: ToolbarItemType, type: string, editor: typeof MarkdownEditor) => {} 边栏点击或快捷键通知
 
-```typescript
-interface MDHotKeyValueType<T> {
-  type: HotKeyTypes,
-  value: T,
-  view: EditorView
-}
+### 快捷键
 
-interface MDToolbarClickValueType {
-  type: ToolbarClickTypes,
-  value: string,
-  view: MarkdownEditor
-}
-```
-
-### 快捷键 (HotKeyTypes)
-
-| 组合键    | 说明    |
-| --- | --- |
-|  Ctrl-s   |  保存   |
-|  Ctrl-b   |  美化、格式化   |
-|  Ctrl-1   |  一级标题   |
-|  Ctrl-2   |  二级标题   |
-|  Ctrl-3   |  三级标题   |
-|  Ctrl-4   |  四级标题   |
-|  Ctrl-5   |  五级标题   |
-|  Ctrl-6   |  六级标题   |
-|  Ctrl-Alt-t   |  插入表格   |
-|  Ctrl-Alt-m   |  插入媒体   |
-|  Ctrl-Alt-p   |  预览   |
-|  Ctrl-Alt-b   |  加粗   |
-|  Ctrl-Alt-i   |  斜体   |
-|  Ctrl-Alt-l   |  删除线   |
-|  Ctrl-Alt-h   |  分割线   |
-|  Ctrl-Alt-q   |  引用   |
-|  Shift-Alt-o   |  有序列表   |
-|  Shift-Alt-u   |  无序列表   |
-|  Shift-Alt-t   |  任务列表   |
-|  Shift-Alt-i   |  内联代码   |
-|  Shift-Alt-b   |  块级代码   |
-|  Shift-Alt-l   |  链接   |
+查看帮助文档，编辑器获得焦点，按 `Alt + h` 即可查看。
 
 
 ### 基础配置
 
 ```typescript
-// 基本配置
-const config = {
-  theme: 'light', // 默认模式
-  themeAttr: 'theme' // 同步白天黑夜模式，用body上的控制属性的名称
+
+const dialog = {
+  fullScreen: false,
+  fixed: false,
+  zIndex: 3
+}
+const theme = {
+  def: 'light', // light or dark
+  observer: 'body',
+  observerAttr: 'theme'
 }
 
-// 右侧悬浮按钮控制
-const helper = {
-  theme: true, // 是否显示控制白天黑夜模式按钮
-  hotkey: true // 是否显示展示快捷键按钮
+const editorConfig = {
+  lineWrapping: true, // 较长文本是否自动换行
+  lineNumbers: true, // 是否显示行号
+  allowMultipleSelections: true // 是否允许多行选择
 }
 
-// <MarkdownEditor v-model="value" :helper="helper" :config="config" @hotKey="hotKeyHandler" @change="changeHandler" />
+// <MarkdownEditor v-model="value" :dialog="dialog" :theme="theme" :editor="editorConfig" />
 ```
 
 ### 常见问题
@@ -140,4 +125,56 @@ http://localhost:3000/
   --editor-bg: #f5f5f5;
   --editor-bg-dark: #000000;
 }
+```
+
+#### 在边栏上我能做什么
+
+```vue
+<template>
+  <div class="codemirror-demo">
+    <MarkdownEditor
+      v-model="value"
+      @toolbarItemAction="toolbarItemAction"
+      :beforeInitToolbars="beforeInitToolbars" />
+  </div>
+</template>
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+
+import '@totonoo/vue-codemirror/dist/style.css'
+import { MarkdownEditor } from '@totonoo/vue-codemirror'
+import IconUpload from '../components/editor/theme/markdown/upload.svg?component'
+
+export default defineComponent({
+  components: {
+    MarkdownEditor
+  },
+  setup () {
+    const value = ref('')
+    const TopCustom: MarkdownMDToolbarItemType = {
+      type: 'top_custom',
+      title: '自定义',
+      icon: IconUpload,
+      shortcutKey: 'Alt-x',
+      action: () => {
+        console.log('in')
+      }
+    }
+    const beforeInitToolbars = (toolbars: MarkdownMDToolbarsType) => {
+      toolbars.top.push(TopCustom)
+      return toolbars
+    }
+    const toolbarItemAction = (item: MarkdownMDToolbarItemType, type: string, editor: typeof MarkdownEditor) => {
+      console.log(item.type, type) // type: click[点击], keyboard[键盘]
+      editor.setValue('test demo')
+    }
+    return {
+      value,
+      beforeInitToolbars,
+      toolbarItemAction
+    }
+
+  },
+})
+</script>
 ```

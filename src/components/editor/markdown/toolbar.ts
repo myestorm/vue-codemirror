@@ -1,6 +1,7 @@
 import { FunctionalComponent, SVGAttributes } from 'vue'
 import parserMarkdown from 'prettier/parser-markdown'
-import MarkdownEditor, { MarkdownThemeType } from './index'
+import MarkdownEditor from './index'
+import { ThemeType } from '../core/editor'
 
 import IconHead from '../theme/markdown/head.svg?component'
 import IconTable from '../theme/markdown/table.svg?component'
@@ -52,7 +53,7 @@ export enum ToolbarItemTypes {
 }
 
 export interface ToolbarItemType {
-  type: ToolbarItemTypes, 
+  type: ToolbarItemTypes | string, 
   title: string, 
   icon: FunctionalComponent<SVGAttributes, {}>,
   shortcutKey?: string,
@@ -199,7 +200,7 @@ export default function createToolbar (editor: MarkdownEditor): ToolbarsType  {
     shortcutKey: 'Alt-l',
     action: () => {
       const _change = () => {
-        const _theme = editor.theme === MarkdownThemeType.DARK ? MarkdownThemeType.LIGHT : MarkdownThemeType.DARK
+        const _theme = editor.theme === ThemeType.DARK ? ThemeType.LIGHT : ThemeType.DARK
         editor.changThemeHandler(_theme)
         editor.theme = _theme
       }
@@ -211,10 +212,10 @@ export default function createToolbar (editor: MarkdownEditor): ToolbarsType  {
           const body = editor.$$(_epx)
           if (body) {
             const val = editor.theme
-            if (val === MarkdownThemeType.DARK) {
+            if (val === ThemeType.DARK) {
               body.removeAttribute(_attr)
             } else {
-              body.setAttribute(_attr, MarkdownThemeType.DARK)
+              body.setAttribute(_attr, ThemeType.DARK)
             }
           } else {
             _change()

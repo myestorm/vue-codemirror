@@ -34,7 +34,7 @@
     </editor-dialog>
 
     <editor-dialog v-model="previewVisible" :fixed="dialogConfig.fixed" :fullScreen="true" :zIndex="dialogConfig.zIndex" :header="{ title: '预览' }">
-      <editor-preview v-model="preview" />
+      <editor-preview v-model="preview" :dark="previewDark" />
     </editor-dialog>
 
     <editor-dialog v-model="helperVisible" :fixed="dialogConfig.fixed" contentMaxWidth="50%" :zIndex="dialogConfig.zIndex" :fullScreen="dialogConfig.fullScreen" :header="{ title: '帮助文档' }">
@@ -45,13 +45,21 @@
 <script lang="ts">
 import { defineComponent, onMounted, nextTick, ref, shallowRef, reactive, watch, computed } from 'vue'
 import IconMore from '../theme/markdown/more.svg?component'
-import MarkdownEditor, { MarkdownThemeType, MarkdownEventType } from './index'
+import MarkdownEditor from './index'
 import { ToolbarsType, ToolbarItemType, ToolbarItemTypes } from './toolbar'
+import { ThemeType, EventType, BaseOptionsType } from '../core/editor'
 import EditorDialog from '../../dialog/index.vue'
 import EditorTable from './widget/table.vue'
 import EditorUpload from './widget/upload.vue'
 import EditorPreview from './widget/preview.vue'
 import EditorHelper from './widget/helper.vue'
+
+export type MarkdownThemeType = ThemeType
+export type MarkdownEventType = EventType
+export type MarkdownBaseOptionsType = BaseOptionsType
+export type MarkdownMDToolbarsType = ToolbarsType
+export type MarkdownMDToolbarItemType = ToolbarItemType
+export type MarkdownMDToolbarItemTypes = ToolbarItemTypes
 
 export default defineComponent({
   name: 'TotonooMarkdownEditor',
@@ -71,8 +79,21 @@ export default defineComponent({
     dialog: {
       type: Object,
       default: () => {}
+    },
+    theme: {
+      type: Object,
+      default: () => {}
+    },
+    editor: {
+      type: Object,
+      default: () => {}
+    },
+    beforeInitToolbars: {
+      type: Function,
+      default: null
     }
   },
+  emits: ['ready', 'update:modelValue', 'change', 'blur', 'focus', 'selectionChange', 'themeChange', 'toolbarItemAction'],
   setup (props, ctx) {
     // 处理配置
     const dialogDefConfig = {
@@ -82,10 +103,27 @@ export default defineComponent({
     }
     const dialogConfig = Object.assign(dialogDefConfig, props.dialog)
 
+    const themeDefConfig = {
+      def: ThemeType.LIGHT,
+      observer: 'body',
+      observerAttr: 'theme'
+    }
+    const themeConfig = Object.assign(themeDefConfig, props.theme)
+
+    const editorDefConfig = {
+      lineWrapping: true,
+      lineNumbers: true,
+      allowMultipleSelections: true
+    }
+    const editorConfig = Object.assign(editorDefConfig, props.editor)
+
     const editor = new MarkdownEditor({
       initValue: props.modelValue,
       theme: {
-        def: MarkdownThemeType.LIGHT
+        ...themeConfig
+      },
+      editorConfig: {
+        ...editorConfig
       }
     })
     const editRootElement = ref()
@@ -125,6 +163,7 @@ export default defineComponent({
 
     // 预览
     const previewVisible = ref(false)
+    const previewDark = ref(false)
     const preview = computed(() => props.modelValue)
     const setPreviewVisible = (val: boolean) => {
       previewVisible.value = val
@@ -203,10 +242,16 @@ export default defineComponent({
             break
           }
         }
+        return item
+      })
+      if (typeof props.beforeInitToolbars === 'function') {
+        _toolbars = props.beforeInitToolbars(_toolbars)
+      }
+      _toolbars.top.map(item => {
         item.end = toolbarEmit
         return item
       })
-      _toolbars.top.map(item => {
+      _toolbars.center.map(item => {
         item.end = toolbarEmit
         return item
       })
@@ -234,25 +279,26 @@ export default defineComponent({
       })
       toolbars.value = editor.getToolbars()
 
-      editor.setEvent(MarkdownEventType.CHANGE, (v, e) => {
+      editor.setEvent(EventType.CHANGE, (v, e) => {
         ctx.emit('update:modelValue', v)
-        ctx.emit(MarkdownEventType.CHANGE, v, e)
+        ctx.emit(EventType.CHANGE, v, e)
       })
 
-      editor.setEvent(MarkdownEventType.BLUR, (v, e) => {
-        ctx.emit(MarkdownEventType.BLUR, v, e)
+      editor.setEvent(EventType.BLUR, (v, e) => {
+        ctx.emit(EventType.BLUR, v, e)
       })
 
-      editor.setEvent(MarkdownEventType.FOCUS, (v, e) => {
-        ctx.emit(MarkdownEventType.FOCUS, v, e)
+      editor.setEvent(EventType.FOCUS, (v, e) => {
+        ctx.emit(EventType.FOCUS, v, e)
       })
 
-      editor.setEvent(MarkdownEventType.SELECTCHANGE, (v, e) => {
-        ctx.emit(MarkdownEventType.SELECTCHANGE, v, e)
+      editor.setEvent(EventType.SELECTCHANGE, (v, e) => {
+        ctx.emit(EventType.SELECTCHANGE, v, e)
       })
 
-      editor.setEvent(MarkdownEventType.THEMECHANGE, (v, e) => {
-        ctx.emit(MarkdownEventType.THEMECHANGE, editor.themeStatus, e)
+      editor.setEvent(EventType.THEMECHANGE, (v, e) => {
+        previewDark.value = (v === 'dark')
+        ctx.emit(EventType.THEMECHANGE, v, e)
       })
 
       ctx.emit('ready', editor)
@@ -300,6 +346,7 @@ export default defineComponent({
       mediaVisible,
       mediaDone,
       preview,
+      previewDark,
       previewVisible,
       helperVisible,
       hotKeys,
@@ -325,8 +372,8 @@ export default defineComponent({
   --input-text-color: rgba(0, 0, 0, 0.9);
   --input-text-bg: rgba(0, 0, 0, 0.06);
   --input-text-hover-bg: rgba(0,0,0, 0.1);
-  --scroll-bar-color: #888888;
-  --scroll-track-color: #dddddd;
+  --scroll-bar-color: #aaaaaa;
+  --scroll-track-color: var(--editor-bg-light, '#ffffff');
   &.dark {
     --color-bg: var(--editor-bg-dark, '#2a2a2b');
     --color-shadow: 0 0 2px 0 rgba(255,255,255,0.16) inset;
@@ -339,7 +386,7 @@ export default defineComponent({
     --input-text-bg: rgba(255, 255, 255, 0.08);
     --input-text-hover-bg: rgba(255, 255, 255, 0.16);
     --scroll-bar-color: #444444;
-    --scroll-track-color: #000000;
+    --scroll-track-color: var(--editor-bg-dark, '#2a2a2b');
   }
   width: 100%;
   height: 100%;
@@ -413,15 +460,15 @@ export default defineComponent({
   }
 
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
     height: 1px;
   }
   ::-webkit-scrollbar-thumb {
-    border-radius: 8px;
+    border-radius: 6px;
     background-color: var(--scroll-bar-color);
   }
   ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+    // box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
     background: var(--scroll-track-color);
   }
 }

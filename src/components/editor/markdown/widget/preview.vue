@@ -1,6 +1,6 @@
 <template>
   <div class="editor-preview" ref="previewBox">
-    <div class="editor-preview-content markdown-body" v-html="html"></div>
+    <div class="editor-preview-content markdown-body" :class="[dark ? 'dark' : '']" v-html="html"></div>
   </div>
 </template>
 <script lang="ts">
@@ -13,6 +13,10 @@ export default defineComponent({
     modelValue: {
       type: String,
       default: ''
+    },
+    dark: {
+      type: Boolean,
+      default: false
     }
   },
   setup (props, ctx) {

@@ -1,67 +1,98 @@
 <template>
   <div class="codemirror-demo">
-    <MarkdownEditor v-model="value" :helper="{ theme: false, hotkey: false }" @hotKey="hotKeyHandler" @toolbarClick="toolbarClickHandler" @change="changeHandler" />
+    <MarkdownEditor
+      v-model="value"
+      :editor="editorConfig"
+      @blur="changeHandler"
+      @focus="changeHandler"
+      @selectionChange="consoleHandler"
+      @themeChange="consoleHandler"
+      @change="changeHandler" />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 
-import MarkdownEditor, { MDHotKeyValueType, MDToolbarClickValueType } from '../components/editor/markdown/index.vue'
+import MarkdownEditor from '../components/editor/markdown/index.vue'
+// import '../../dist/style.css'
+// import { MarkdownEditor } from '../../dist/vue-codemirror.es.js'
 
 export default defineComponent({
   components: {
     MarkdownEditor
   },
   setup () {
-    const value = ref(`## Markdown是什么？
+    const value = ref(`## 如何使用 Markdown 编写技术文档
 
-Markdown是一种轻量级标记语言，它以纯文本形式(易读、易写、易更改)编写文档，并最终以HTML格式发布。
-Markdown也可以理解为将以MARKDOWN语法编写的语言转换成HTML内容的工具。
+文章以名为 Markdown 的轻量级标记语言编写，这种方式易于阅读且易于学习。
 
-## 谁创造了它？
+当我们在 GitHub 中存储内容时，该内容可以使用名为 GitHub Flavored Markdown (GFM) 的 Markdown 版本，该版本提供了额外的功能，可满足常见的格式需求。此外，还通过几种方式扩展了 Markdown，以支持某些与帮助相关的功能，如备注、提示和嵌入式视频。
 
-它由 \`Aaron Swartz\` 和 \`John Gruber\` 共同设计，Aaron Swartz就是那位于去年（2013年1月11日）自杀,有着开挂一般人生经历的程序员。维基百科对他的介绍是：软件工程师、作家、政治组织者、互联网活动家、维基百科人。
+## Markdown 基础知识
 
-他有着足以让你跪拜的人生经历：
+### 标题
 
-- 14岁参与RSS 1.0规格标准的制订。
-- 2004年入读斯坦福，之后退学。
-- 2005年创建Infogami，之后与Reddit合并成为其合伙人。
-- 2010年创立求进会（Demand Progress），积极参与禁止网络盗版法案（SOPA）活动，最终该提案被撤回。
-- 2011年7月19日，因被控从MIT和JSTOR下载480万篇学术论文并以免费形式上传于网络被捕。
-- 2013年1月自杀身亡。`)
-  const btn = ref('白天')
-  return {
-    value,
-    btn,
-    hotKeyHandler (val: MDHotKeyValueType<string | null>) {
-      const { type } = val
-      if(type === 'Ctrl-s') {
-        console.log(1000)
-      }
-    },
-    toolbarClickHandler (val: MDToolbarClickValueType) {
-      const { type } = val
-      console.log(type)
-    },
-    changeHandler (val: string) {
-      // console.log(value)
-    },
-    addClass () {
-      const attr = 'theme'
-      const body = document.querySelector('body')
-      if (body) {
-        const theme = body.getAttribute(attr)
-        if (theme) {
-          body.removeAttribute(attr)
-          btn.value = '白天'
-        } else {
-          body.setAttribute(attr, 'dark')
-          btn.value = '黑夜'
-        }
-      }
+要创建标题，请在行首使用井号 (#)：
+
+\`\`\`markdown
+# This is level 1 (article title)
+
+## This is level 2
+
+### This is level 3
+
+#### This is level 4
+
+##### This is level 5
+\`\`\`
+
+### 基本文本
+
+Markdown 中的段落不需要特殊语法。
+
+要将文本格式设置为 **粗体**，请用两个星号将文本括起来。要将文本格式设置为 *斜体*，请用一个星号将文本括起来：
+
+> Markdown是一种轻量级标记语言，创始人为約翰·格魯伯。它允许人们使用易读易写的  
+> 纯文本格式编写文档，然后转换成有效的XHTML（或者HTML）文档。
+
+### 编号列表和项目符号列表
+
+1. This is step 1.
+2. This is the next step.
+3. This is yet another step, the third.
+
+- This is item 1
+- This is item 2
+- This is item 3
+
+- [ ] This is task list item 1
+- [x] This is task list item 2
+- [ ] This is task list item 3
+
+### 表格
+
+| num | name     |
+| --- | -------- |
+| 1   | zhangsan |
+| 2   | lisi     |
+`)
+    const changeHandler = (val: string, editor: typeof MarkdownEditor) => {
+      console.log(val === value.value)
     }
-  }
+    const consoleHandler = (val: string, editor: typeof MarkdownEditor) => {
+      console.log(val)
+    }
+    const editorConfig = {
+      lineWrapping: true,
+      lineNumbers: true,
+      allowMultipleSelections: true
+    }
+    return {
+      value,
+      editorConfig,
+      changeHandler,
+      consoleHandler
+    }
 
   },
 })
@@ -71,6 +102,7 @@ Markdown也可以理解为将以MARKDOWN语法编写的语言转换成HTML内容
   --editor-bg-light: #f5f5f5;
   --editor-bg-dark: #000000;
   border: 1px #dddddd solid;
-  height: 600px;
+  box-sizing: border-box;
+  height: calc(100vh - 40px);
 }
 </style>

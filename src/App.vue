@@ -3,9 +3,7 @@
     <div class="top-nav">
       <ul>
         <li><router-link to="/">基础使用</router-link></li>
-        <li><router-link to="/mobile">手机模式</router-link></li>
         <li><router-link to="/toolbar">边栏扩展</router-link></li>
-        <li><router-link to="/document">使用文档</router-link></li>
       </ul>
     </div>
     <div class="main">

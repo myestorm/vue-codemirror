@@ -8,11 +8,8 @@ import { jsonLanguage } from '@codemirror/lang-json'
 import { htmlLanguage } from '@codemirror/lang-html'
 import { cssLanguage } from '@codemirror/lang-css'
 
-import BaseEditor, { BaseOptionsType, ThemeType, EventType } from '../core/editor'
+import BaseEditor, { BaseOptionsType } from '../core/editor'
 import createToolbar, { ToolbarsType, ToolbarItemType } from './toolbar'
-
-export const MarkdownThemeType = ThemeType
-export const MarkdownEventType = EventType
 
 export interface InitOptionsType {
   beforeInitToolbars: (toolbars: ToolbarsType) => ToolbarsType

@@ -170,10 +170,11 @@ class BaseEditor {
       }
     }
 
+    this.theme = theme
+
     if (this.events[EventType.THEMECHANGE]) {
-      const val = this.getValue()
       const editor = this
-      this.events[EventType.THEMECHANGE](val, editor)
+      this.events[EventType.THEMECHANGE](this.theme, editor)
     }
   }
 

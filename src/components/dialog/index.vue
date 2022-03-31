@@ -14,8 +14,19 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, onUpdated, ref, nextTick } from 'vue'
+import { defineComponent, onMounted, onUpdated, ref, nextTick, CSSProperties, PropType } from 'vue'
 import IconRemove from './icon/remove.svg?component'
+
+interface Props {
+  modelValue: boolean;
+  header: {
+    title: string
+  };
+  contentMaxWidth: CSSProperties['max-width'];
+  fullScreen: boolean;
+  fixed: boolean;
+  zIndex: CSSProperties['z-index'];
+}
 
 export default defineComponent({
   components: {
@@ -27,13 +38,13 @@ export default defineComponent({
       default: false
     },
     header: {
-      type: Object,
+      type: Object as PropType<Props['header']>,
       default: () => {
         return { title: '' }
       }
     },
     contentMaxWidth: {
-      type: String,
+      type: String as PropType<Props['contentMaxWidth']>,
       default: '320px'
     },
     fullScreen: {
@@ -45,14 +56,14 @@ export default defineComponent({
       default: false
     },
     zIndex: {
-      type: Number,
+      type: Number as PropType<Props['zIndex']>,
       default: 3
     }
   },
   setup (props, ctx) {
     const id = `editor-dialog-content-${new Date().getTime()}`
     const style = {
-      position: 'absolute',
+      position: 'absolute' as CSSProperties['position'],
       zIndex: props.zIndex
     }
     const contentStyle = {
