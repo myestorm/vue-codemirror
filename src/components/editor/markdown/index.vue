@@ -206,7 +206,8 @@ export default defineComponent({
     const countFoldNumber = (): number => {
       const h = 32
       const _toolbars = editor.getToolbars()
-      const res = Math.floor(editRootElement.value.clientHeight / h) - (_toolbars.top.length + _toolbars.bottom.length) - 1
+      const clientHeight = (editRootElement.value && editRootElement.value.clientHeight) ? editRootElement.value.clientHeight : 600
+      const res = Math.floor(clientHeight / h) - (_toolbars.top.length + _toolbars.bottom.length) - 1
       toolbarFoldNumber.value = res
       return res
     }
