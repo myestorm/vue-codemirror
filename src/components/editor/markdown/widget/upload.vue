@@ -21,8 +21,15 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, PropType } from 'vue'
 import IconUpload from '../../theme/markdown/upload.svg?component'
+
+export interface TotonooMarkdownEditorUploadProps {
+  uploadUrl: string,
+  headers: HeadersInit,
+  uploadSuccess: (result: any) => string,
+  uploadFail: (error: any) => void
+}
 
 export default defineComponent({
   components: {
@@ -30,23 +37,23 @@ export default defineComponent({
   },
   props: {
     uploadUrl: {
-      type: String,
+      type: String as PropType<TotonooMarkdownEditorUploadProps['uploadUrl']>,
       default: '/file/upload'
     },
+    headers: {
+      type: Object as PropType<TotonooMarkdownEditorUploadProps['headers']>,
+      default: undefined
+    },
     uploadSuccess: {
-      type: Function,
-      default: () => {
-        return (result: any): string => {
-          return result.data.domain + result.data.filepath
-        }
+      type: Function as PropType<TotonooMarkdownEditorUploadProps['uploadSuccess']>,
+      default: (result: any): string => {
+        return result.data.domain + result.data.filepath
       }
     },
     uploadFail: {
-      type: Function,
-      default: () => {
-        return (error: any): void => {
-          console.error(error)
-        }
+      type: Function as PropType<TotonooMarkdownEditorUploadProps['uploadFail']>,
+      default: (error: any): void => {
+        console.error(8888, error)
       }
     }
   },
@@ -68,16 +75,24 @@ export default defineComponent({
         const fileField: HTMLInputElement | null = document.querySelector('input#'+ fileId)
         if (fileField && fileField.files && fileField.files[0]) {
           formData.append('file', fileField.files[0])
+          const headers = props.headers
           fetch(props.uploadUrl, {
+            headers,
             method: 'post',
             body: formData
           })
-          .then(response => response.json())
+          .then(response => {
+            if (response.ok) {
+              return response.json()
+            } else {
+              throw new Error(`status: ${response.status}, ${response.statusText}`)
+            }
+          })
           .then(result => {
-            url.value = props.uploadSuccess()(result)
+            url.value = props.uploadSuccess(result)
           })
           .catch(error => {
-            props.uploadFail()(error)
+            props.uploadFail(error)
           })
           .then(() => {
             fileField.value = ''

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, Router, RouteRecordRaw } from 'vue-rout
 
 import home from '../views/home.vue'
 import toolbar from '../views/toolbar.vue'
+import upload from '../views/upload.vue'
 
 const routes: RouteRecordRaw[] = [{
   path: '/',
@@ -15,6 +16,14 @@ const routes: RouteRecordRaw[] = [{
   path: '/toolbar',
   name: 'Toolbar',
   component: toolbar,
+  meta: {
+    icon: 'home',
+    keepAlive: false
+  }
+}, {
+  path: '/upload',
+  name: 'Upload',
+  component: upload,
   meta: {
     icon: 'home',
     keepAlive: false

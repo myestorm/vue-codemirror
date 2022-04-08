@@ -30,7 +30,7 @@
     </editor-dialog>
 
     <editor-dialog v-model="mediaVisible" :fixed="dialogConfig.fixed" :fullScreen="dialogConfig.fullScreen" :zIndex="dialogConfig.zIndex" :header="{ title: '插入资源' }">
-      <editor-upload @done="mediaDone" />
+      <editor-upload @done="mediaDone" :uploadUrl="upload.uploadUrl" :uploadSuccess="upload.uploadSuccess" :uploadFail="upload.uploadFail" :headers="upload.headers" />
     </editor-dialog>
 
     <editor-dialog v-model="previewVisible" :fixed="dialogConfig.fixed" :fullScreen="true" :zIndex="dialogConfig.zIndex" :header="{ title: '预览' }">
@@ -43,7 +43,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, nextTick, ref, shallowRef, reactive, watch, computed } from 'vue'
+import { defineComponent, onMounted, nextTick, ref, shallowRef, reactive, watch, computed, PropType, CSSProperties } from 'vue'
 import IconMore from '../theme/markdown/more.svg?component'
 import MarkdownEditor from './index'
 import { ToolbarsType, ToolbarItemType, ToolbarItemTypes } from './toolbar'
@@ -61,6 +61,32 @@ export type MarkdownMDToolbarsType = ToolbarsType
 export type MarkdownMDToolbarItemType = ToolbarItemType
 export type MarkdownMDToolbarItemTypes = ToolbarItemTypes
 
+export interface TotonooMarkdownEditorProps {
+  modelValue: string,
+  dialog: {
+    fullScreen: boolean,
+    fixed: boolean,
+    zIndex: CSSProperties['z-index']
+  },
+  theme: {
+    def: ThemeType,
+    observer: string,
+    observerAttr: string
+  },
+  editor: {
+    lineWrapping: boolean,
+    lineNumbers: boolean,
+    allowMultipleSelections: boolean
+  },
+  beforeInitToolbars: (toolbars: ToolbarsType) => ToolbarsType,
+  upload: {
+    uploadUrl: string,
+    headers: HeadersInit,
+    uploadSuccess: (result: any) => string,
+    uploadFail: (error: any) => void
+  }
+}
+
 export default defineComponent({
   name: 'TotonooMarkdownEditor',
   components: {
@@ -73,24 +99,30 @@ export default defineComponent({
   },
   props: {
     modelValue: {
-      type: String,
+      type: String as PropType<TotonooMarkdownEditorProps['modelValue']>,
       default: ''
     },
     dialog: {
-      type: Object,
+      type: Object as PropType<TotonooMarkdownEditorProps['dialog']>,
       default: () => {}
     },
     theme: {
-      type: Object,
+      type: Object as PropType<TotonooMarkdownEditorProps['theme']>,
       default: () => {}
     },
     editor: {
-      type: Object,
+      type: Object as PropType<TotonooMarkdownEditorProps['editor']>,
       default: () => {}
     },
     beforeInitToolbars: {
-      type: Function,
+      type: Function as PropType<TotonooMarkdownEditorProps['beforeInitToolbars']>,
       default: null
+    },
+    upload: {
+      type: Object as PropType<TotonooMarkdownEditorProps['upload']>,
+      default: () => {
+        return {}
+      }
     }
   },
   emits: ['ready', 'update:modelValue', 'change', 'blur', 'focus', 'selectionChange', 'themeChange', 'toolbarItemAction'],

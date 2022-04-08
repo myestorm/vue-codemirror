@@ -4,6 +4,7 @@
       <ul>
         <li><router-link to="/">基础使用</router-link></li>
         <li><router-link to="/toolbar">边栏扩展</router-link></li>
+        <li><router-link to="/upload">上传</router-link></li>
       </ul>
     </div>
     <div class="main">
