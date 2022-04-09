@@ -9,7 +9,8 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 
-import MarkdownEditor, { MarkdownMDToolbarsType, MarkdownMDToolbarItemType } from '../components/editor/markdown/index.vue'
+import MarkdownEditor from '../components/editor/markdown/index.vue'
+import { ToolbarsType, ToolbarItemType } from '../components/editor/markdown/types'
 import IconUpload from '../components/editor/theme/markdown/upload.svg?component'
 
 export default defineComponent({
@@ -18,7 +19,7 @@ export default defineComponent({
   },
   setup () {
     const value = ref('')
-    const TopCustom: MarkdownMDToolbarItemType = {
+    const TopCustom: ToolbarItemType = {
       type: 'top_custom',
       title: '自定义',
       icon: IconUpload,
@@ -27,11 +28,11 @@ export default defineComponent({
         console.log('in')
       }
     }
-    const beforeInitToolbars = (toolbars: MarkdownMDToolbarsType) => {
+    const beforeInitToolbars = (toolbars: ToolbarsType) => {
       toolbars.top.push(TopCustom)
       return toolbars
     }
-    const toolbarItemAction = (item: MarkdownMDToolbarItemType, type: string, editor: typeof MarkdownEditor) => {
+    const toolbarItemAction = (item: ToolbarItemType, type: string, editor: typeof MarkdownEditor) => {
       console.log(item.type, type) // type: click[点击], keyboard[键盘]
       editor.setValue('test demo')
     }

@@ -101,7 +101,20 @@ const editorConfig = {
   allowMultipleSelections: true // 是否允许多行选择
 }
 
-// <MarkdownEditor v-model="value" :dialog="dialog" :theme="theme" :editor="editorConfig" />
+const uploadConfig = {
+  uploadUrl: '/api/upload',
+  headers: {
+    token: 'test token'
+  },
+  uploadSuccess: (result: any): string => {
+    return result.data.domain + result.data.filepath
+  },
+  uploadFail: (error: any): void => {
+    console.log('console', error)
+  }
+}
+
+// <MarkdownEditor v-model="value" :dialog="dialog" :theme="theme" :editor="editorConfig" :upload="uploadConfig" />
 ```
 
 ### 常见问题

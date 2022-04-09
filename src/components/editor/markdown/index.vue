@@ -54,38 +54,7 @@ import EditorUpload from './widget/upload.vue'
 import EditorPreview from './widget/preview.vue'
 import EditorHelper from './widget/helper.vue'
 
-export type MarkdownThemeType = ThemeType
-export type MarkdownEventType = EventType
-export type MarkdownBaseOptionsType = BaseOptionsType
-export type MarkdownMDToolbarsType = ToolbarsType
-export type MarkdownMDToolbarItemType = ToolbarItemType
-export type MarkdownMDToolbarItemTypes = ToolbarItemTypes
-
-export interface TotonooMarkdownEditorProps {
-  modelValue: string,
-  dialog: {
-    fullScreen: boolean,
-    fixed: boolean,
-    zIndex: CSSProperties['z-index']
-  },
-  theme: {
-    def: ThemeType,
-    observer: string,
-    observerAttr: string
-  },
-  editor: {
-    lineWrapping: boolean,
-    lineNumbers: boolean,
-    allowMultipleSelections: boolean
-  },
-  beforeInitToolbars: (toolbars: ToolbarsType) => ToolbarsType,
-  upload: {
-    uploadUrl: string,
-    headers: HeadersInit,
-    uploadSuccess: (result: any) => string,
-    uploadFail: (error: any) => void
-  }
-}
+import { TotonooMarkdownEditorProps } from './types'
 
 export default defineComponent({
   name: 'TotonooMarkdownEditor',

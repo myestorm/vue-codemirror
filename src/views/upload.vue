@@ -2,6 +2,7 @@
   <div class="codemirror-demo">
     <MarkdownEditor
       v-model="value"
+      :theme="theme"
       :upload="uploadConfig"
       @change="changeHandler" />
   </div>
@@ -9,9 +10,8 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 
-import MarkdownEditor, { TotonooMarkdownEditorProps } from '../components/editor/markdown/index.vue'
-// import '../../dist/style.css'
-// import { MarkdownEditor } from '../../dist/vue-codemirror.es.js'
+import MarkdownEditor from '../components/editor/markdown/index.vue'
+import { TotonooMarkdownEditorProps, ThemeType } from '../components/editor/markdown/types'
 
 export default defineComponent({
   components: {
@@ -28,6 +28,11 @@ export default defineComponent({
     const uploadFail: TotonooMarkdownEditorProps['upload']['uploadFail'] = (error: any): void => {
       console.log('console', error)
     }
+    const theme = {
+      def: ThemeType.DARK,
+      observer: 'body',
+      observerAttr: 'theme'
+    }
     const uploadConfig = {
       uploadUrl: '/api/upload',
       headers: {
@@ -39,6 +44,7 @@ export default defineComponent({
     return {
       value,
       uploadConfig,
+      theme,
       changeHandler
     }
 
