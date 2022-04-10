@@ -1,5 +1,5 @@
 <template>
-  <div class="totonoo-markdown-editor" :class="[isFullscreen ? 'editor-fullscreen' : '']" ref="editRootElement" :id="prefix + id">
+  <div class="totonoo-markdown-editor" :class="[isFullscreen ? 'editor-fullscreen' : '', theme?.def === 'dark' ? 'dark' : '' ]" ref="editRootElement" :id="prefix + id">
     <div :id="contentId" class="content"></div>
     <aside class="toolbar">
       <div v-for="(items, key) in toolbars" :class="[key]" :key="key">
