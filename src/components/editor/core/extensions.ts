@@ -1,5 +1,5 @@
 import { EditorState, Compartment, Extension } from '@codemirror/state'
-import { EditorView, highlightSpecialChars, drawSelection, highlightActiveLine } from '@codemirror/view'
+import { EditorView, highlightSpecialChars, drawSelection, highlightActiveLine, keymap } from '@codemirror/view'
 import { lineNumbers, highlightActiveLineGutter } from '@codemirror/gutter'
 import { foldGutter } from '@codemirror/fold'
 import { history } from '@codemirror/history'
@@ -9,6 +9,7 @@ import { closeBrackets } from '@codemirror/closebrackets'
 import { autocompletion } from '@codemirror/autocomplete'
 import { highlightSelectionMatches } from '@codemirror/search'
 import { rectangularSelection } from '@codemirror/rectangular-selection'
+import { indentWithTab } from "@codemirror/commands"
 
 import { indentOnInput } from '@codemirror/language'
 
@@ -47,6 +48,9 @@ export default function (options: EditorConfigType): Extension[] {
   extensions.push(rectangularSelection())
   extensions.push(highlightActiveLine())
   extensions.push(highlightSelectionMatches())
+
+  // tab
+  extensions.push(keymap.of([indentWithTab]))
 
   // 自定义折叠代码块 
   extensions.push(foldGutter({

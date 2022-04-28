@@ -3,7 +3,7 @@ import { EditorView, KeyBinding, keymap } from '@codemirror/view'
 
 import { LanguageDescription, LanguageSupport } from '@codemirror/language'
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
-import { jsxLanguage } from '@codemirror/lang-javascript'
+import { jsxLanguage, tsxLanguage } from '@codemirror/lang-javascript'
 import { jsonLanguage } from '@codemirror/lang-json'
 import { htmlLanguage } from '@codemirror/lang-html'
 import { cssLanguage } from '@codemirror/lang-css'
@@ -26,6 +26,7 @@ class MarkdownEditor extends BaseEditor {
   init (exp: string, options?: InitOptionsType): void {
     const extensions: Extension[] = []
     const javascript = new LanguageSupport(jsxLanguage)
+    const typescript = new LanguageSupport(tsxLanguage)
     const css = new LanguageSupport(cssLanguage)
     const json = new LanguageSupport(jsonLanguage)
     const html = new LanguageSupport(htmlLanguage, [css, javascript])
@@ -34,9 +35,16 @@ class MarkdownEditor extends BaseEditor {
       codeLanguages: [
         LanguageDescription.of({
           name: 'javascript',
-          alias: ['js', 'jsx'],
+          alias: ['js', 'jsx', 'ts', 'tsx'],
           async load() {
             return javascript
+          },
+        }),
+        LanguageDescription.of({
+          name: 'typescript',
+          alias: ['ts', 'tsx'],
+          async load() {
+            return typescript
           },
         }),
         LanguageDescription.of({
